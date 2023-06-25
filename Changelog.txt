@@ -1,0 +1,80 @@
+package main
+
+import (
+	"fmt"
+
+	"poehelper/config"
+	"poehelper/fonts"
+	"poehelper/window"
+
+	imgui "github.com/AllenDang/cimgui-go"
+)
+
+var (
+	isOpenDemoWindow    bool
+	isOpenMetricsWindow bool
+	backend             imgui.Backend
+
+	buttonH float32 = 19
+)
+
+func init() {
+
+}
+
+func main() {
+	backend = imgui.CreateBackend(imgui.NewGLFWBackend())
+	backend.SetBgColor(imgui.NewVec4(0.45, 0.55, 0.6, 1.0))
+	backend.CreateWindow(config.App.Info.ProjectName, 1200, 900, 0)
+
+	imgui.CurrentIO().SetConfigFlags(imgui.CurrentIO().ConfigFlags() & ^imgui.ConfigFlagsDockingEnable)
+	// imgui.CurrentIO().SetIniFilename("test.ini")
+	fonts.AppendDefaultFont(imgui.CurrentIO())
+
+	backend.Run(loop)
+}
+
+func loop() {
+	debug()
+
+	metricsWindow(isOpenMetricsWindow)
+	demoWindow(isOpenDemoWindow)
+
+	window.SettingsWindow(config.App.Setting.IsOpen)
+	window.LabMapWindow(config.App.LabMap.IsOpen)
+	window.Changelog(config.App.Changelog.IsOpen)
+
+}
+
+func debug() {
+	buttonH = imgui.FontSize() + 2*imgui.CurrentIO().Ctx().Style().FramePadding().Y
+	imgui.Text(fmt.Sprintf("%c", fonts.ICON_FA_TRAILER))
+	if imgui.ButtonV("lab map", config.App.Button.Base) {
+		config.App.LabMap.IsOpen = true
+	}
+	if imgui.ButtonV("demo", imgui.NewVec2(100, buttonH)) {
+		isOpenDemoWindow = true
+	}
+	if imgui.ButtonV("metrics", imgui.NewVec2(100, buttonH)) {
+		isOpenMetricsWindow = true
+	}
+	if imgui.ButtonV("settings", imgui.NewVec2(100, buttonH)) {
+		config.App.Setting.IsOpen = true
+	}
+	if imgui.ButtonV("changelog", imgui.NewVec2(100, buttonH)) {
+		config.App.Changelog.IsOpen = true
+	}
+
+}
+
+func metricsWindow(isOpen bool) {
+	if isOpen {
+		imgui.ShowMetricsWindowV(&isOpenMetricsWindow)
+	}
+}
+
+func demoWindow(isOpen bool) {
+	if isOpen {
+		imgui.ShowDemoWindowV(&isOpenDemoWindow)
+	}
+}
