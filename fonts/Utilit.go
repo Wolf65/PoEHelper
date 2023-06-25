@@ -35,7 +35,8 @@ func AppendDefaultFont(io imgui.IO) {
 	builder.AddRanges((*imgui.Wchar)(unsafe.Pointer(&W)))
 	builder.BuildRanges(ranges)
 
-	ioF.Fonts().AddFontFromFileTTFV("fonts/JetBrainsMono-Medium.ttf", 13, 0, ranges.Data())
+	ioF.Fonts().AddFontFromFileTTFV("fonts/JetBrainsMono-Medium.ttf", 13, 0, ioF.Fonts().GlyphRangesDefault())
+	// ioF.Fonts().AddFontFromFileTTFV("fonts/JetBrainsMono-Medium.ttf", 13, 0, ranges.Data())
 
 	ioF.Fonts().Build()
 }
