@@ -3,6 +3,7 @@ package platform
 import (
 	"fmt"
 	"math"
+	"poehelper/config"
 	"runtime"
 
 	imgui "github.com/AllenDang/cimgui-go"
@@ -10,9 +11,6 @@ import (
 )
 
 const (
-	windowWidth  = 1280
-	windowHeight = 720
-
 	mouseButtonPrimary   = 0
 	mouseButtonSecondary = 1
 	mouseButtonTertiary  = 2
@@ -26,19 +24,14 @@ func (err StringError) Error() string {
 	return string(err)
 }
 
-const (
-	// ErrUnsupportedClientAPI is used in case the API is not available by the platform.
-	ErrUnsupportedClientAPI = StringError("unsupported ClientAPI")
-)
-
-// GLFWClientAPI identifies the render system that shall be initialized.
 type GLFWClientAPI string
 
-// This is a list of GLFWClientAPI constants.
 const (
-	GLFWClientAPIOpenGL2 GLFWClientAPI = "OpenGL2"
-	GLFWClientAPIOpenGL3 GLFWClientAPI = "OpenGL3"
+	// ErrUnsupportedClientAPI is used in case the API is not available by the platform.
+	ErrUnsupportedClientAPI               = StringError("unsupported ClientAPI")
+	GLFWClientAPIOpenGL3    GLFWClientAPI = "OpenGL3"
 )
+
 
 // GLFW implements a platform based on github.com/go-gl/glfw (v3.2).
 type GLFW struct {
@@ -61,21 +54,12 @@ func NewGLFW(io imgui.IO, clientAPI GLFWClientAPI) (*GLFW, error) {
 		return nil, fmt.Errorf("failed to initialize glfw: %w", err)
 	}
 
-	switch clientAPI {
-	case GLFWClientAPIOpenGL2:
-		glfw.WindowHint(glfw.ContextVersionMajor, 2)
-		glfw.WindowHint(glfw.ContextVersionMinor, 1)
-	case GLFWClientAPIOpenGL3:
-		glfw.WindowHint(glfw.ContextVersionMajor, 3)
-		glfw.WindowHint(glfw.ContextVersionMinor, 2)
-		glfw.WindowHint(glfw.OpenGLProfile, glfw.OpenGLCoreProfile)
-		glfw.WindowHint(glfw.OpenGLForwardCompatible, 1)
-	default:
-		glfw.Terminate()
-		return nil, ErrUnsupportedClientAPI
-	}
+	glfw.WindowHint(glfw.ContextVersionMajor, 3)
+	glfw.WindowHint(glfw.ContextVersionMinor, 2)
+	glfw.WindowHint(glfw.OpenGLProfile, glfw.OpenGLCoreProfile)
+	glfw.WindowHint(glfw.OpenGLForwardCompatible, 1)
 
-	window, err := glfw.CreateWindow(windowWidth, windowHeight, "CImGui-Go GLFW+"+string(clientAPI)+" example", nil, nil)
+	window, err := glfw.CreateWindow(1200, 900, config.App.Info.ProjectName, nil, nil)
 	if err != nil {
 		glfw.Terminate()
 		return nil, fmt.Errorf("failed to create window: %w", err)
