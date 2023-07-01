@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 	"poehelper/config"
+	"poehelper/fonts"
 	"poehelper/platform"
 	"poehelper/renderer"
 	"poehelper/window"
@@ -15,15 +16,6 @@ import (
 var (
 	Tststr = "test.ini"
 )
-
-// заменить этим
-
-// func (self IO) SetIniFilename(v string) {
-// 	vArg, vFin := wrapString(v)
-// 	C.wrap_ImGuiIO_SetIniFilename(self.handle(), vArg)
-
-// 	vFin()
-// }
 
 func main() {
 	context := imgui.CreateContext()
@@ -45,41 +37,9 @@ func main() {
 	}
 	defer renderer.Dispose()
 
+	fonts.AppendDefaultFont()
+
 	Run(platform, renderer)
-
-	// backend := imgui.CreateBackend(imgui.NewGLFWBackend())
-	// backend.SetBgColor(imgui.NewVec4(0.45, 0.55, 0.6, 1.0))
-	// backend.CreateWindow(config.App.Info.ProjectName, 1200, 900, 0)
-	// backend.SetTargetFPS(60)
-	// x, y := backend.DisplaySize()
-	// config.App.Vars.DisplaySize = imgui.Vec2{X: float32(x), Y: float32(y)}
-
-	// imgui.CurrentIO().SetConfigFlags(imgui.CurrentIO().ConfigFlags() & ^imgui.ConfigFlagsDockingEnable)
-
-	// // imgui.CurrentIO().SetIniFilename(Tststr)
-
-	// // fmt.Println(imgui.CurrentIO().IniFilename())
-	// fonts.AppendDefaultFont(imgui.CurrentIO())
-
-	// config.App.Vars.ItemSpacing = imgui.CurrentIO().Ctx().Style().ItemSpacing()
-
-	// refreshTicket := time.NewTicker(500 * time.Millisecond)
-	// refreshTicketDone := make(chan bool)
-
-	// go func() {
-	// 	for {
-	// 		select {
-	// 		case <-refreshTicketDone:
-	// 			return
-	// 		case <-refreshTicket.C:
-	// 			imgui.GetBackend().Refresh()
-	// 		}
-	// 	}
-	// }()
-	// defer func() {
-	// 	refreshTicket.Stop()
-	// 	refreshTicketDone <- true
-	// }()
 
 	// go func() {
 	// 	pathLog := "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Path of Exile\\logs\\Client.txt"
@@ -120,53 +80,9 @@ func main() {
 	// backend.Run(loop)
 }
 
-// Platform covers mouse/keyboard/gamepad inputs, cursor shape, timing, windowing.
-type Platform interface {
-	// ShouldStop is regularly called as the abort condition for the program loop.
-	ShouldStop() bool
-	// ProcessEvents is called once per render loop to dispatch any pending events.
-	ProcessEvents()
-	// DisplaySize returns the dimension of the display.
-	DisplaySize() [2]float32
-	// FramebufferSize returns the dimension of the framebuffer.
-	FramebufferSize() [2]float32
-	// NewFrame marks the begin of a render pass. It must update the cimgui IO state according to user input (mouse, keyboard, ...)
-	NewFrame()
-	// PostRender marks the completion of one render pass. Typically this causes the display buffer to be swapped.
-	PostRender()
-	// ClipboardText returns the current text of the clipboard, if available.
-	ClipboardText() (string, error)
-	// SetClipboardText sets the text as the current text of the clipboard.
-	SetClipboardText(text string)
-}
+func Run(p platform.Platform, r renderer.Renderer) {
+	clearColor := [3]float32{0.5, 0.5, 0.5}
 
-type clipboard struct {
-	platform Platform
-}
-
-func (board clipboard) Text() (string, error) {
-	return board.platform.ClipboardText()
-}
-
-func (board clipboard) SetText(text string) {
-	board.platform.SetClipboardText(text)
-}
-
-// Renderer covers rendering cimgui draw data.
-type Renderer interface {
-	// PreRender causes the display buffer to be prepared for new output.
-	PreRender(clearColor [3]float32)
-	// Render draws the provided cimgui draw data.
-	Render(displaySize [2]float32, framebufferSize [2]float32, drawData imgui.DrawData)
-}
-
-const (
-	millisPerSecond = 1000
-	sleepDuration   = time.Millisecond * 25
-)
-
-func Run(p Platform, r Renderer) {
-	clearColor := [3]float32{0, 0, 0}
 	for !p.ShouldStop() {
 		p.ProcessEvents()
 
@@ -187,7 +103,7 @@ func Run(p Platform, r Renderer) {
 		p.PostRender()
 
 		// sleep to avoid 100% CPU usage for this demo
-		<-time.After(sleepDuration)
+		<-time.After(25 * time.Millisecond)
 	}
 }
 
@@ -207,6 +123,7 @@ func loop() {
 }
 
 func debug() {
+	imgui.Text(fmt.Sprintf("%c", fonts.ICON_FA_500PX))
 }
 
 func metricsWindow(isOpen bool) {
