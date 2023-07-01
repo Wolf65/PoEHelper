@@ -6,7 +6,6 @@ import (
 
 	imgui "github.com/AllenDang/cimgui-go"
 	"github.com/go-gl/gl/v3.2-core/gl"
-	// "github.com/ptxmac/cimgui-go-examples/internal/renderers/gl/v3.2-core/gl"
 )
 
 //go:embed shader.vert
@@ -14,6 +13,14 @@ var unversionedVertexShader string
 
 //go:embed shader.frag
 var unversionedFragmentShader string
+
+// Renderer covers rendering cimgui draw data.
+type Renderer interface {
+	// PreRender causes the display buffer to be prepared for new output.
+	PreRender(clearColor [3]float32)
+	// Render draws the provided cimgui draw data.
+	Render(displaySize [2]float32, framebufferSize [2]float32, drawData imgui.DrawData)
+}
 
 // OpenGL3 implements a renderer based on github.com/go-gl/gl (v3.2-core).
 type OpenGL3 struct {
