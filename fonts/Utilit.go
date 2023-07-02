@@ -1,13 +1,13 @@
 package fonts
 
 import (
-	"unsafe"
-
 	imgui "github.com/AllenDang/cimgui-go"
 )
 
 var (
 	W = []imgui.Wchar{0x0020, 0x00FF, 0}
+
+// W1 = []imgui.Wchar{0xf081, 0xf949, 0}
 )
 
 // type font struct {
@@ -22,21 +22,41 @@ var (
 // 	Icons map[string]string
 // }
 
-func AppendDefaultFont(io imgui.IO) {
-	ioF := imgui.CurrentIO()
+func AppendDefaultFont() {
+	// io := imgui.CurrentIO()
 
-	fontFa := imgui.NewFontConfig()
-	fontFa.SetMergeMode(true)
-	fontFa.SetPixelSnapH(true)
+	// io.Fonts().AddFontFromFileTTF("fonts/JetBrainsMono-Medium.ttf", 13)
+	// io.Fonts().Build()
+	// f.Fonts().Build()
+	// f.Fonts().AddFontFromFileTTFV("fonts/JetBrainsMono-Medium.ttf", 13, 0, f.Fonts().GlyphRangesDefault())
+	// f.Fonts().Build()
 
-	ranges := imgui.NewGlyphRange()
-	builder := imgui.NewFontGlyphRangesBuilder()
+	// f.Fonts().Build()
+	// f.AddFontFromFileTTFV("fonts/JetBrainsMono-Medium.ttf", 13, 0, f.GlyphRangesDefault())
 
-	builder.AddRanges((*imgui.Wchar)(unsafe.Pointer(&W)))
-	builder.BuildRanges(ranges)
+	// f.Build()
 
-	ioF.Fonts().AddFontFromFileTTFV("fonts/JetBrainsMono-Medium.ttf", 13, 0, ioF.Fonts().GlyphRangesDefault())
-	// ioF.Fonts().AddFontFromFileTTFV("fonts/JetBrainsMono-Medium.ttf", 13, 0, ranges.Data())
+	// ioF := imgui.CurrentIO()@
 
-	ioF.Fonts().Build()
+	// fontFa := imgui.NewFontConfig()
+	// fontFa.SetMergeMode(true)
+	// fontFa.SetPixelSnapH(true)
+
+	// ranges := imgui.NewGlyphRange()
+	// builder := imgui.NewFontGlyphRangesBuilder()
+
+	// builder.AddRanges((*imgui.Wchar)(unsafe.Pointer(&W)))
+	// builder.BuildRanges(ranges)
+
+	// rangesFa := imgui.NewGlyphRange()
+	// builderFa := imgui.NewFontGlyphRangesBuilder()
+
+	// builderFa.AddRanges((*imgui.Wchar)(unsafe.Pointer(&W1[0])))
+	// builderFa.BuildRanges(rangesFa)
+
+	// ioF.Fonts().AddFontFromFileTTFV("fonts/JetBrainsMono-Medium.ttf", 13, 0, ioF.Fonts().GlyphRangesDefault())
+	// ioF.Fonts().AddFontFromFileTTFV("fonts/JetBrainsMono-Medium.ttf", 13, fontFa, ranges.Data())
+	// ioF.Fonts().AddFontFromFileTTFV("fonts/fa-brands-400.ttf", 13, fontFa, rangesFa.Data())
+
+	// ioF.Fonts().Build()
 }

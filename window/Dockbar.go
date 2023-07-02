@@ -36,7 +36,9 @@ func DockbarWindow(isOpen bool) {
 				config.App.Setting.IsOpen = true
 			}
 			imgui.SameLine()
-			imgui.ButtonV("ESC", config.App.Vars.DockbarButton)
+			if imgui.ButtonV("ESC", config.App.Vars.DockbarButton) {
+				config.App.Vars.RootPlatform.GetWindow().SetShouldClose(true)
+			}
 
 			imgui.End()
 		} else {

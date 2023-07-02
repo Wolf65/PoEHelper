@@ -14,7 +14,7 @@ import (
 )
 
 var (
-	Tststr = "test.ini"
+	err error
 )
 
 func main() {
@@ -23,23 +23,26 @@ func main() {
 	defer context.Destroy()
 	io := imgui.CurrentIO()
 
-	platform, err := platform.NewGLFW(io, platform.GLFWClientAPIOpenGL3)
-	if err != nil {
-		_, _ = fmt.Fprintf(os.Stderr, "%v\n", err)
-		os.Exit(-1)
-	}
-	defer platform.Dispose()
+	config.App.Vars.RootPlatform, err = platform.NewGLFW(io, platform.GLFWClientAPIOpenGL3, 1200, 900, config.App.Info.ProjectName)
 
-	renderer, err := renderer.NewOpenGL3(io)
 	if err != nil {
 		_, _ = fmt.Fprintf(os.Stderr, "%v\n", err)
 		os.Exit(-1)
 	}
-	defer renderer.Dispose()
+	defer config.App.Vars.RootPlatform.Dispose()
+
+	config.App.Vars.RootRenderer, err = renderer.NewOpenGL3(io)
+	if err != nil {
+		_, _ = fmt.Fprintf(os.Stderr, "%v\n", err)
+		os.Exit(-1)
+	}
+	defer config.App.Vars.RootRenderer.Dispose()
+
+	imgui.CurrentIO().SetConfigFlags(imgui.CurrentIO().ConfigFlags() | imgui.ConfigFlagsViewportsEnable)
 
 	fonts.AppendDefaultFont()
 
-	Run(platform, renderer)
+	Run(config.App.Vars.RootPlatform, config.App.Vars.RootRenderer)
 
 	// go func() {
 	// 	pathLog := "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Path of Exile\\logs\\Client.txt"

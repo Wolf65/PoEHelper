@@ -287,10 +287,12 @@ func (renderer *OpenGL3) createFontsTexture() {
 	gl.TexParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR)
 	gl.TexParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR)
 	gl.PixelStorei(gl.UNPACK_ROW_LENGTH, 0)
+	// ?
 	gl.TexImage2D(gl.TEXTURE_2D, 0, gl.RED, int32(width), int32(height),
 		0, gl.RED, gl.UNSIGNED_BYTE, pixels)
 
 	// Store our identifier
+
 	io.Fonts().SetTexID(imgui.TextureID(uintptr(renderer.fontTexture)))
 
 	// Restore state

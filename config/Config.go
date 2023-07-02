@@ -1,6 +1,9 @@
 package config
 
 import (
+	"poehelper/platform"
+	"poehelper/renderer"
+
 	imgui "github.com/AllenDang/cimgui-go"
 )
 
@@ -27,6 +30,9 @@ type info struct {
 }
 
 type vars struct {
+	RootPlatform *platform.GLFW
+	RootRenderer *renderer.OpenGL3
+
 	DisplaySize    imgui.Vec2
 	BaseButton     imgui.Vec2
 	BaseLongButton imgui.Vec2
@@ -96,6 +102,8 @@ var App = application{
 	},
 	//
 	Vars: vars{
+		RootPlatform: nil,
+		RootRenderer: nil,
 		// set in main.go DisplaySize
 		BaseButton:     imgui.Vec2{X: 80, Y: 19},
 		BaseLongButton: imgui.Vec2{X: 100, Y: 19},

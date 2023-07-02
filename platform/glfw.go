@@ -3,7 +3,6 @@ package platform
 import (
 	"fmt"
 	"math"
-	"poehelper/config"
 	"runtime"
 
 	imgui "github.com/AllenDang/cimgui-go"
@@ -62,7 +61,6 @@ func (board clipboard) SetText(text string) {
 	board.platform.SetClipboardText(text)
 }
 
-// GLFW implements a platform based on github.com/go-gl/glfw (v3.2).
 type GLFW struct {
 	imguiIO imgui.IO
 
@@ -75,7 +73,7 @@ type GLFW struct {
 }
 
 // NewGLFW attempts to initialize a GLFW context.
-func NewGLFW(io imgui.IO, clientAPI GLFWClientAPI) (*GLFW, error) {
+func NewGLFW(io imgui.IO, clientAPI GLFWClientAPI, width, height int, title string) (*GLFW, error) {
 	runtime.LockOSThread()
 
 	err := glfw.Init()
@@ -84,11 +82,12 @@ func NewGLFW(io imgui.IO, clientAPI GLFWClientAPI) (*GLFW, error) {
 	}
 
 	glfw.WindowHint(glfw.ContextVersionMajor, 3)
-	glfw.WindowHint(glfw.ContextVersionMinor, 2)
+	glfw.WindowHint(glfw.ContextVersionMinor, 3)
 	glfw.WindowHint(glfw.OpenGLProfile, glfw.OpenGLCoreProfile)
 	glfw.WindowHint(glfw.OpenGLForwardCompatible, 1)
+	// glfw.WindowHint(glfw.TransparentFramebuffer, 1)
 
-	window, err := glfw.CreateWindow(1200, 900, config.App.Info.ProjectName, nil, nil)
+	window, err := glfw.CreateWindow(width, height, title, nil, nil)
 	if err != nil {
 		glfw.Terminate()
 		return nil, fmt.Errorf("failed to create window: %w", err)
@@ -110,6 +109,10 @@ func NewGLFW(io imgui.IO, clientAPI GLFWClientAPI) (*GLFW, error) {
 func (platform *GLFW) Dispose() {
 	platform.window.Destroy()
 	glfw.Terminate()
+}
+
+func (platform *GLFW) GetWindow() *glfw.Window {
+	return platform.window
 }
 
 // ShouldStop returns true if the window is to be closed.
