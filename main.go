@@ -26,11 +26,12 @@ var (
 // }
 
 func main() {
-	backend := imgui.CreateBackend(imgui.NewGLFWBackend())
-	backend.SetBgColor(imgui.NewVec4(0.45, 0.55, 0.6, 1.0))
-	backend.CreateWindow(config.App.Info.ProjectName, 1200, 900, 0)
-	backend.SetTargetFPS(60)
-	x, y := backend.DisplaySize()
+
+	config.App.Vars.Backend = imgui.CreateBackend(imgui.NewGLFWBackend())
+	config.App.Vars.Backend.SetBgColor(imgui.NewVec4(0.45, 0.55, 0.6, 1.0))
+	config.App.Vars.Backend.CreateWindow(config.App.Info.ProjectName, 1200, 900, 0)
+	config.App.Vars.Backend.SetTargetFPS(60)
+	x, y := config.App.Vars.Backend.DisplaySize()
 	config.App.Vars.DisplaySize = imgui.Vec2{X: float32(x), Y: float32(y)}
 
 	imgui.CurrentIO().SetConfigFlags(imgui.CurrentIO().ConfigFlags() & ^imgui.ConfigFlagsDockingEnable)
@@ -96,7 +97,7 @@ func main() {
 		// 	fmt.Println(line.Text)
 		// }
 	}()
-	backend.Run(loop)
+	config.App.Vars.Backend.Run(loop)
 }
 
 func loop() {

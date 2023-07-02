@@ -27,6 +27,8 @@ type info struct {
 }
 
 type vars struct {
+	Backend imgui.Backend
+	//
 	DisplaySize    imgui.Vec2
 	BaseButton     imgui.Vec2
 	BaseLongButton imgui.Vec2
@@ -96,6 +98,7 @@ var App = application{
 	},
 	//
 	Vars: vars{
+		Backend: nil,
 		// set in main.go DisplaySize
 		BaseButton:     imgui.Vec2{X: 80, Y: 19},
 		BaseLongButton: imgui.Vec2{X: 100, Y: 19},
