@@ -1,6 +1,5 @@
 package fonts
 
-// #include "stdint.h"
 import (
 	"fmt"
 	"unsafe"
