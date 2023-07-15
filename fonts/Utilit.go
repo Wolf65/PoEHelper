@@ -1,26 +1,30 @@
 package fonts
 
+// #include "stdint.h"
 import (
+	"fmt"
 	"unsafe"
 
 	imgui "github.com/AllenDang/cimgui-go"
 )
 
 var (
-	W = []imgui.Wchar{0x0020, 0x00FF, 0}
+	RusRanges       = []uint16{0x0020, 0xA69F, 0}
+	IconRange       = []uint16{uint16(IconsFontAwesome6.Min), uint16(IconsFontAwesome6.Max16), 0}
+	IconBrandsRange = []uint16{uint16(IconsFontAwesome6Brands.Min), uint16(IconsFontAwesome6Brands.Max16), 0}
 )
 
-// type font struct {
-// 	// The filenames of the associated TTF files are provided in Filenames,
-// 	// where each entry stores first an abbreviated name for the fot and
-// 	// then the actual filename.
-// 	Filenames [][2]string
-// 	// The range of Unicode code points is given by [Min, Max). The largest
-// 	// 16-bit code point is stored in Max16.
-// 	Min, Max16, Max int
-// 	// Icons stores the mapping from user-friendly names to code points.
-// 	Icons map[string]string
-// }
+type Font struct {
+	// The filenames of the associated TTF files are provided in Filenames,
+	// where each entry stores first an abbreviated name for the fot and
+	// then the actual filename.
+	Filenames [][2]string
+	// The range of Unicode code points is given by [Min, Max). The largest
+	// 16-bit code point is stored in Max16.
+	Min, Max16, Max int
+	// Icons stores the mapping from user-friendly names to code points.
+	Icons map[string]string
+}
 
 func AppendDefaultFont(io imgui.IO) {
 	ioF := imgui.CurrentIO()
@@ -29,14 +33,10 @@ func AppendDefaultFont(io imgui.IO) {
 	fontFa.SetMergeMode(true)
 	fontFa.SetPixelSnapH(true)
 
-	ranges := imgui.NewGlyphRange()
-	builder := imgui.NewFontGlyphRangesBuilder()
-
-	builder.AddRanges((*imgui.Wchar)(unsafe.Pointer(&W)))
-	builder.BuildRanges(ranges)
-
-	ioF.Fonts().AddFontFromFileTTFV("fonts/JetBrainsMono-Medium.ttf", 13, 0, ioF.Fonts().GlyphRangesDefault())
-	// ioF.Fonts().AddFontFromFileTTFV("fonts/JetBrainsMono-Medium.ttf", 13, 0, ranges.Data())
+	ioF.Fonts().AddFontFromFileTTFV("fonts/ttf/JetBrainsMono-Medium.ttf", 13, 0, (*imgui.Wchar)(unsafe.Pointer(&RusRanges[0])))
+	ioF.Fonts().AddFontFromFileTTFV(fmt.Sprintf("fonts/ttf/%s", IconsFontAwesome6.Filenames[0][1]), 13, fontFa, (*imgui.Wchar)(unsafe.Pointer(&IconRange[0])))
+	ioF.Fonts().AddFontFromFileTTFV(fmt.Sprintf("fonts/ttf/%s", IconsFontAwesome6.Filenames[1][1]), 13, fontFa, (*imgui.Wchar)(unsafe.Pointer(&IconRange[0])))
+	ioF.Fonts().AddFontFromFileTTFV(fmt.Sprintf("fonts/ttf/%s", IconsFontAwesome6Brands.Filenames[0][1]), 13, fontFa, (*imgui.Wchar)(unsafe.Pointer(&IconBrandsRange[0])))
 
 	ioF.Fonts().Build()
 }
