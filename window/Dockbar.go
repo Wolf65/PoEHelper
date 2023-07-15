@@ -2,6 +2,7 @@ package window
 
 import (
 	"poehelper/config"
+	"poehelper/fonts"
 
 	imgui "github.com/AllenDang/cimgui-go"
 )
@@ -12,9 +13,9 @@ func DockbarWindow(isOpen bool) {
 			imgui.SetNextWindowSize(config.App.Dockbar.WindowSize)
 			imgui.BeginV(config.App.Dockbar.Title, &config.App.Dockbar.IsOpen, config.App.Dockbar.WindowFlags)
 
-			imgui.ButtonV("Home", config.App.Vars.DockbarButton)
+			imgui.ButtonV(fonts.IconsFontAwesome6.Icons["House"], config.App.Vars.DockbarButton)
 			imgui.SameLine()
-			if imgui.ButtonV("Met", config.App.Vars.DockbarButton) {
+			if imgui.ButtonV(fonts.IconsFontAwesome6.Icons["Info"], config.App.Vars.DockbarButton) {
 				config.App.Vars.IsOpenMetrics = true
 			}
 			imgui.SameLine()
@@ -22,7 +23,7 @@ func DockbarWindow(isOpen bool) {
 				config.App.Vars.IsOpenDemo = true
 			}
 			imgui.SameLine()
-			if imgui.ButtonV("Pin", config.App.Vars.DockbarButton) {
+			if imgui.ButtonV(fonts.IconsFontAwesome6.Icons["Thumbtack"], config.App.Vars.DockbarButton) {
 				config.App.Pin.IsOpen = true
 				config.App.Dockbar.IsPinned = false
 				config.App.Dockbar.WindowFlags ^= imgui.WindowFlagsNoMove
@@ -32,11 +33,11 @@ func DockbarWindow(isOpen bool) {
 				config.App.LabMap.IsOpen = true
 			}
 			imgui.SameLine()
-			if imgui.ButtonV("Set", config.App.Vars.DockbarButton) {
+			if imgui.ButtonV(fonts.IconsFontAwesome6.Icons["Gear"], config.App.Vars.DockbarButton) {
 				config.App.Setting.IsOpen = true
 			}
 			imgui.SameLine()
-			if imgui.ButtonV("ESC", config.App.Vars.DockbarButton) {
+			if imgui.ButtonV(fonts.IconsFontAwesome6.Icons["ArrowRightFromBracket"], config.App.Vars.DockbarButton) {
 				config.App.Vars.Backend.SetShouldClose(true)
 			}
 
