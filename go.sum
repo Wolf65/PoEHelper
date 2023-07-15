@@ -1,5 +1,3 @@
-github.com/AllenDang/cimgui-go v0.0.0-20230619023324-e4dae85333e0 h1:FiIxrM2FBANywYgRcB1O4zudsgNXkbtyMxt3ck7qmbA=
-github.com/AllenDang/cimgui-go v0.0.0-20230619023324-e4dae85333e0/go.mod h1:iNfbIyOBN8k3XScMxULbrwYbPsXEAUD0Jb6UwrspQb8=
 github.com/fsnotify/fsnotify v1.6.0 h1:n+5WquG0fcWoWp6xPWfHdbskMCQaFnG6PfBrh1Ky4HY=
 github.com/fsnotify/fsnotify v1.6.0/go.mod h1:sl3t1tCWJFWoRz9R8WJCbQihKKwmorjAbSClcnxKAGw=
 github.com/hpcloud/tail v1.0.0 h1:nfCOvKYfkgYP8hkirhJocXT2+zOD8yUNjXaWfTlyFKI=

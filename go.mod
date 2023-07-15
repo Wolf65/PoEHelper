@@ -2,6 +2,8 @@ module poehelper
 
 go 1.20
 
+replace github.com/AllenDang/cimgui-go => S:\goProject\cimgui-go
+
 require (
 	github.com/AllenDang/cimgui-go v0.0.0-20230619023324-e4dae85333e0
 	github.com/hpcloud/tail v1.0.0
