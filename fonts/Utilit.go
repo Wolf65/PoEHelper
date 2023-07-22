@@ -11,6 +11,9 @@ var (
 	RusRanges       = []uint16{0x0020, 0xA69F, 0}
 	IconRange       = []uint16{uint16(IconsFontAwesome6.Min), uint16(IconsFontAwesome6.Max16), 0}
 	IconBrandsRange = []uint16{uint16(IconsFontAwesome6Brands.Min), uint16(IconsFontAwesome6Brands.Max16), 0}
+
+	baseFontSize float32 = 13
+	iconFontSize float32 = 13
 )
 
 type Font struct {
@@ -32,10 +35,10 @@ func AppendDefaultFont(io imgui.IO) {
 	fontFa.SetMergeMode(true)
 	fontFa.SetPixelSnapH(true)
 
-	ioF.Fonts().AddFontFromFileTTFV("fonts/ttf/JetBrainsMono-Medium.ttf", 13, 0, (*imgui.Wchar)(unsafe.Pointer(&RusRanges[0])))
-	ioF.Fonts().AddFontFromFileTTFV(fmt.Sprintf("fonts/ttf/%s", IconsFontAwesome6.Filenames[0][1]), 13, fontFa, (*imgui.Wchar)(unsafe.Pointer(&IconRange[0])))
-	ioF.Fonts().AddFontFromFileTTFV(fmt.Sprintf("fonts/ttf/%s", IconsFontAwesome6.Filenames[1][1]), 13, fontFa, (*imgui.Wchar)(unsafe.Pointer(&IconRange[0])))
-	ioF.Fonts().AddFontFromFileTTFV(fmt.Sprintf("fonts/ttf/%s", IconsFontAwesome6Brands.Filenames[0][1]), 13, fontFa, (*imgui.Wchar)(unsafe.Pointer(&IconBrandsRange[0])))
+	ioF.Fonts().AddFontFromFileTTFV("fonts/ttf/JetBrainsMono-Medium.ttf", baseFontSize, 0, (*imgui.Wchar)(unsafe.Pointer(&RusRanges[0])))
+	// ioF.Fonts().AddFontFromFileTTFV(fmt.Sprintf("fonts/ttf/%s", IconsFontAwesome6.Filenames[0][1]), iconFontSize, fontFa, (*imgui.Wchar)(unsafe.Pointer(&IconRange[0])))
+	ioF.Fonts().AddFontFromFileTTFV(fmt.Sprintf("fonts/ttf/%s", IconsFontAwesome6.Filenames[1][1]), iconFontSize, fontFa, (*imgui.Wchar)(unsafe.Pointer(&IconRange[0])))
+	ioF.Fonts().AddFontFromFileTTFV(fmt.Sprintf("fonts/ttf/%s", IconsFontAwesome6Brands.Filenames[0][1]), iconFontSize, fontFa, (*imgui.Wchar)(unsafe.Pointer(&IconBrandsRange[0])))
 
 	ioF.Fonts().Build()
 }
