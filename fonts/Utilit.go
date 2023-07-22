@@ -36,7 +36,6 @@ func AppendDefaultFont(io imgui.IO) {
 	fontFa.SetPixelSnapH(true)
 
 	ioF.Fonts().AddFontFromFileTTFV("fonts/ttf/JetBrainsMono-Medium.ttf", baseFontSize, 0, (*imgui.Wchar)(unsafe.Pointer(&RusRanges[0])))
-	// ioF.Fonts().AddFontFromFileTTFV(fmt.Sprintf("fonts/ttf/%s", IconsFontAwesome6.Filenames[0][1]), iconFontSize, fontFa, (*imgui.Wchar)(unsafe.Pointer(&IconRange[0])))
 	ioF.Fonts().AddFontFromFileTTFV(fmt.Sprintf("fonts/ttf/%s", IconsFontAwesome6.Filenames[1][1]), iconFontSize, fontFa, (*imgui.Wchar)(unsafe.Pointer(&IconRange[0])))
 	ioF.Fonts().AddFontFromFileTTFV(fmt.Sprintf("fonts/ttf/%s", IconsFontAwesome6Brands.Filenames[0][1]), iconFontSize, fontFa, (*imgui.Wchar)(unsafe.Pointer(&IconBrandsRange[0])))
 

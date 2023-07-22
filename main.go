@@ -2,8 +2,10 @@ package main
 
 import (
 	"fmt"
+	"os"
 	"poehelper/config"
 	"poehelper/fonts"
+	"poehelper/misc"
 	"poehelper/window"
 	"regexp"
 	"time"
@@ -25,6 +27,40 @@ var (
 // 	vFin()
 // }
 
+func init() {
+	//check if the required folders and files are available
+	executablePath, _ := os.Getwd()
+	// fmt.Printf("executablePath: %v\n", executablePath)
+
+	//font
+	config.App.Vars.FontDirectory = fmt.Sprintf("%s\\fonts\\ttf\\", executablePath)
+	config.App.Vars.LabDirectory = fmt.Sprintf("%s\\lab\\", executablePath)
+
+	if _, err := os.Stat(config.App.Vars.FontDirectory); err != nil {
+		if os.IsNotExist(err) {
+			//Shows error if file not exists
+			fmt.Println("font Folder does not exist.")
+			os.MkdirAll(config.App.Vars.FontDirectory, 0777)
+			misc.DownloadFile(config.App.Vars.FontDirectory, "fa-brands-400.ttf", "https://github.com/Wolf65/PoEHelper/raw/main/fonts/ttf/fa-brands-400.ttf")
+			misc.DownloadFile(config.App.Vars.FontDirectory, "fa-solid-900.ttf", "https://github.com/Wolf65/PoEHelper/raw/main/fonts/ttf/fa-solid-900.ttf")
+			misc.DownloadFile(config.App.Vars.FontDirectory, "JetBrainsMono-Medium.ttf", "https://github.com/Wolf65/PoEHelper/raw/main/fonts/ttf/JetBrainsMono-Medium.ttf")
+		} else {
+			// Shows success message like file is there
+		}
+	}
+
+	//lab
+	if _, err := os.Stat(config.App.Vars.LabDirectory); err != nil {
+		if os.IsNotExist(err) {
+			//Shows error if file not exists
+			fmt.Println("lab Folder does not exist.")
+			os.MkdirAll(config.App.Vars.LabDirectory, 0777)
+		} else {
+			// Shows success message like file is there
+		}
+	}
+}
+
 func main() {
 
 	config.App.Vars.Backend = imgui.CreateBackend(imgui.NewGLFWBackend())
@@ -32,7 +68,7 @@ func main() {
 	config.App.Vars.Backend.CreateWindow(config.App.Info.ProjectName, 1200, 900, 0)
 	config.App.Vars.Backend.SetTargetFPS(60)
 	x, y := config.App.Vars.Backend.DisplaySize()
-	
+
 	config.App.Vars.DisplaySize = imgui.Vec2{X: float32(x), Y: float32(y)}
 
 	imgui.CurrentIO().SetConfigFlags(imgui.CurrentIO().ConfigFlags() & ^imgui.ConfigFlagsDockingEnable)
