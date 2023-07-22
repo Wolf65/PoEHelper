@@ -20,14 +20,16 @@ type application struct {
 	LabCompass labCompass
 	Changelog  changelog
 }
-
 type info struct {
 	ProjectName    string
 	ProjectVersion string
 }
-
 type vars struct {
 	Backend imgui.Backend
+	//
+	ExecutablePath string
+	FontDirectory  string
+	LabDirectory   string
 	//
 	DisplaySize    imgui.Vec2
 	BaseButton     imgui.Vec2
@@ -38,7 +40,6 @@ type vars struct {
 	IsOpenMetrics bool
 	IsOpenDemo    bool
 }
-
 type setting struct {
 	Title       string
 	IsOpen      bool
@@ -54,7 +55,6 @@ type pin struct {
 	WindowSize  imgui.Vec2
 	WindowFlags imgui.WindowFlags
 }
-
 type dockbar struct {
 	Title       string
 	IsOpen      bool
@@ -62,7 +62,6 @@ type dockbar struct {
 	WindowSize  imgui.Vec2
 	WindowFlags imgui.WindowFlags
 }
-
 type labMap struct {
 	Title       string
 	IsOpen      bool
@@ -70,7 +69,6 @@ type labMap struct {
 	WindowSize  imgui.Vec2
 	WindowFlags imgui.WindowFlags
 }
-
 type labCompass struct {
 	Title       string
 	IsOpen      bool
@@ -78,7 +76,6 @@ type labCompass struct {
 	WindowSize  imgui.Vec2
 	WindowFlags imgui.WindowFlags
 }
-
 type changelog struct {
 	Title       string
 	IsOpen      bool
@@ -100,6 +97,11 @@ var App = application{
 	Vars: vars{
 		Backend: nil,
 		// set in main.go DisplaySize
+
+		ExecutablePath: "",
+		FontDirectory:  "",
+		LabDirectory:   "",
+
 		BaseButton:     imgui.Vec2{X: 80, Y: 19},
 		BaseLongButton: imgui.Vec2{X: 100, Y: 19},
 		// set in main.go ItemSpacing
