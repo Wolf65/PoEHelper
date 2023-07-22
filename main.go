@@ -5,7 +5,7 @@ import (
 	"poehelper/config"
 	"poehelper/fonts"
 	"poehelper/window"
-	"strings"
+	"regexp"
 	"time"
 
 	imgui "github.com/AllenDang/cimgui-go"
@@ -28,17 +28,15 @@ var (
 func main() {
 
 	config.App.Vars.Backend = imgui.CreateBackend(imgui.NewGLFWBackend())
-	config.App.Vars.Backend.SetBgColor(imgui.NewVec4(0.45, 0.55, 0.6, 1.0))
+	config.App.Vars.Backend.SetBgColor(imgui.NewVec4(0.5, 0.5, 0.5, 1.0))
 	config.App.Vars.Backend.CreateWindow(config.App.Info.ProjectName, 1200, 900, 0)
 	config.App.Vars.Backend.SetTargetFPS(60)
 	x, y := config.App.Vars.Backend.DisplaySize()
+	
 	config.App.Vars.DisplaySize = imgui.Vec2{X: float32(x), Y: float32(y)}
 
 	imgui.CurrentIO().SetConfigFlags(imgui.CurrentIO().ConfigFlags() & ^imgui.ConfigFlagsDockingEnable)
 
-	// imgui.CurrentIO().SetIniFilename(Tststr)
-
-	// fmt.Println(imgui.CurrentIO().IniFilename())
 	fonts.AppendDefaultFont(imgui.CurrentIO())
 
 	config.App.Vars.ItemSpacing = imgui.CurrentIO().Ctx().Style().ItemSpacing()
@@ -60,7 +58,7 @@ func main() {
 		refreshTicket.Stop()
 		refreshTicketDone <- true
 	}()
-
+	regexpDisplayMessage, _ := regexp.Compile(`^\d{4}/\d{2}/\d{2}\s\d{2}\:\d{2}\:\d{2}\s\d{9}\scffb0719\s\[\w{4}\s\w{6}\s\d{5}\]\s(.*)$`)
 	go func() {
 		pathLog := "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Path of Exile\\logs\\Client.txt"
 		t, err := tail.TailFile(pathLog, tail.Config{
@@ -83,11 +81,10 @@ func main() {
 			// // get the next log line and echo it out
 			case line := <-t.Lines:
 				if line != nil {
-					// hash cffb0719 print display message
-					s := strings.Split(line.Text, " ")
-					// r, _ := regexp.Match("cffb0719", []byte(line.Text))
-					if s[4] == "cffb0719" {
-						config.TestLog = line.Text
+					res := regexpDisplayMessage.FindAllStringSubmatch(line.Text, -1)
+					if res != nil {
+						fmt.Println(res[0][1])
+						config.TestLog = res[0][1]
 					}
 				}
 			}

@@ -3,6 +3,7 @@ package window
 import (
 	"fmt"
 	"poehelper/config"
+	"poehelper/fonts"
 
 	"golang.org/x/exp/slices"
 
@@ -47,7 +48,6 @@ func SettingsWindow(isOpen bool) {
 		imgui.BeginV(config.App.Setting.Title, &config.App.Setting.IsOpen, config.App.Setting.WindowFlags)
 		heightChild := imgui.ContentRegionAvail().Y - config.App.Vars.BaseButton.Y - config.App.Vars.ItemSpacing.Y
 		imgui.BeginChildStrV("settingMenu", imgui.NewVec2(150, heightChild), true, 0)
-		imgui.Text(config.App.Setting.SelectPage)
 
 		for _, page := range settingPages {
 			if imgui.ButtonV(page.label, imgui.NewVec2(imgui.ContentRegionAvail().X, 0)) {
@@ -71,13 +71,15 @@ func SettingsWindow(isOpen bool) {
 		imgui.Text(fmt.Sprintf("Ver: %s", config.App.Info.ProjectVersion))
 		imgui.SameLine()
 		// informate new update
-		imgui.ButtonV("UP", imgui.Vec2{X: config.App.Vars.BaseButton.Y, Y: config.App.Vars.BaseButton.Y})
+		imgui.ButtonV(fonts.IconsFontAwesome6.Icons["Rotate"], imgui.Vec2{X: config.App.Vars.BaseButton.Y, Y: config.App.Vars.BaseButton.Y})
 		imgui.SameLine()
 		imgui.Dummy(imgui.Vec2{X: imgui.ContentRegionAvail().X - config.App.Vars.BaseButton.X*2 - config.App.Vars.ItemSpacing.X*2, Y: 0})
 		imgui.SameLine()
 		imgui.ButtonV("Save", config.App.Vars.BaseButton)
 		imgui.SameLine()
-		imgui.ButtonV("Cancel", config.App.Vars.BaseButton)
+		if imgui.ButtonV("Cancel", config.App.Vars.BaseButton) {
+			config.App.Setting.IsOpen = false
+		}
 
 		imgui.End()
 	}
@@ -92,15 +94,21 @@ func pageGeneral() {
 }
 
 func pageAbout() {
-	imgui.Text("PoE Helper")
+	imgui.Text(config.App.Info.ProjectName)
 	imgui.Spacing()
-	imgui.Text(fmt.Sprintf("Used cingui-go (Dear ImGui %s)", imgui.Version()))
+	imgui.Text("Used:")
+	imgui.BulletText(fmt.Sprintf("Cimgui-go (Dear ImGui %s)", imgui.Version()))
+	imgui.BulletText("Icons FontAwesome6")
+	imgui.Spacing()
 	imgui.AlignTextToFramePadding()
 	imgui.Text("History: ")
 	imgui.SameLine()
 	if imgui.ButtonV("Changelog", config.App.Vars.BaseLongButton) {
 		config.App.Changelog.IsOpen = true
 	}
+	imgui.Spacing()
 	imgui.Text("Social links:")
-	imgui.ButtonV("GitHub", imgui.NewVec2(32, 32))
+	imgui.ButtonV(fonts.IconsFontAwesome6Brands.Icons["Github"], imgui.NewVec2(32, 32))
+	imgui.SameLine()
+	imgui.ButtonV(fonts.IconsFontAwesome6Brands.Icons["Telegram"], imgui.NewVec2(32, 32))
 }
