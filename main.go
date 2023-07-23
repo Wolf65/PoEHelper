@@ -26,35 +26,33 @@ func init() {
 
 	if _, err := os.Stat(config.App.Vars.FontDirectory); err != nil {
 		if os.IsNotExist(err) {
-			//Shows error if file not exists
-			misc.Log().Info("Font folder does not exist")
+			misc.Log().Warn("Font folder does not exist")
 			os.MkdirAll(config.App.Vars.FontDirectory, 0777)
 			misc.Log().Info("Font folder create")
-			misc.DownloadFile(config.App.Vars.FontDirectory, "fa-brands-400.ttf", "https://github.com/Wolf65/PoEHelper/raw/main/fonts/ttf/fa-brands-400.ttf")
-			misc.Log().Info("fa-brands-400.ttf download")
-			misc.DownloadFile(config.App.Vars.FontDirectory, "fa-solid-900.ttf", "https://github.com/Wolf65/PoEHelper/raw/main/fonts/ttf/fa-solid-900.ttf")
-			misc.Log().Info("fa-solid-900.ttf download")
-			misc.DownloadFile(config.App.Vars.FontDirectory, "JetBrainsMono-Medium.ttf", "https://github.com/Wolf65/PoEHelper/raw/main/fonts/ttf/JetBrainsMono-Medium.ttf")
-			misc.Log().Info("JetBrainsMono-Medium.ttf download")
+			misc.CheckAndDownloadFont()
 		} else {
-			misc.Log().Warnf("Font folder err: %s", err)
+			misc.Log().WithFields(logrus.Fields{
+				"err": err,
+			}).Warn("Font folder err")
 		}
 	} else {
-		misc.Log().Info("Font folder exists")
+		misc.Log().Debug("Font folder exists")
+		misc.CheckAndDownloadFont()
 	}
 
 	//lab
 	if _, err := os.Stat(config.App.Vars.LabDirectory); err != nil {
 		if os.IsNotExist(err) {
-			//Shows error if file not exists
-			misc.Log().Info("Lab folder does not exist")
+			misc.Log().Warn("Lab folder does not exist")
 			os.MkdirAll(config.App.Vars.LabDirectory, 0777)
 			misc.Log().Info("Lab folder create")
 		} else {
-			misc.Log().Warnf("Lab folder err: %s", err)
+			misc.Log().WithFields(logrus.Fields{
+				"err": err,
+			}).Warn("Lab folder err")
 		}
 	} else {
-		misc.Log().Info("Lab folder exists")
+		misc.Log().Debug("Lab folder exists")
 	}
 }
 
@@ -87,10 +85,12 @@ func main() {
 			}
 		}
 	}()
+
 	defer func() {
 		refreshTicket.Stop()
 		refreshTicketDone <- true
 	}()
+
 	regexpDisplayMessage, _ := regexp.Compile(`^\d{4}/\d{2}/\d{2}\s\d{2}\:\d{2}\:\d{2}\s\d{9}\scffb0719\s\[\w{4}\s\w{6}\s\d{5}\]\s(.*)$`)
 	go func() {
 		pathLog := "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Path of Exile\\logs\\Client.txt"
@@ -99,6 +99,7 @@ func main() {
 			Follow:   true,
 			Poll:     true,
 			Location: &tail.SeekInfo{Offset: 0, Whence: 2},
+			Logger:   tail.DiscardingLogger,
 		})
 		if err != nil {
 			misc.Log().WithFields(logrus.Fields{
