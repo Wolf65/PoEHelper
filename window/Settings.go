@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"poehelper/config"
 	"poehelper/fonts"
+	"poehelper/misc"
 
 	"golang.org/x/exp/slices"
 
@@ -38,8 +39,10 @@ func registrationSettingsPages(sP settingPage) {
 }
 
 func init() {
+	misc.Log().Debug("init settings")
 	registrationSettingsPages(settingPage{"General", "pageGeneral", pageGeneral})
 	registrationSettingsPages(settingPage{"About", "pageAbout", pageAbout})
+	misc.Log().Debug("register setting pages")
 }
 
 func SettingsWindow(isOpen bool) {

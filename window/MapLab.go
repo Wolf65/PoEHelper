@@ -5,9 +5,11 @@ import (
 	"fmt"
 	"os"
 	"poehelper/config"
+	"poehelper/misc"
 	"strconv"
 
 	imgui "github.com/AllenDang/cimgui-go"
+	"github.com/sirupsen/logrus"
 )
 
 var (
@@ -16,8 +18,10 @@ var (
 )
 
 func init() {
+	misc.Log().Debug("init map lab")
 	registrationSettingsPages(settingPage{"Lab map", "pegeLabMap", pageLabMap})
 	maps()
+	misc.Log().Debug("register map lab pages")
 }
 
 func LabMapWindow(isOpen bool) {
@@ -169,11 +173,15 @@ type Labyrinth struct {
 func maps() {
 	files, err := os.ReadFile("uber-2023-06-24.json")
 	if err != nil {
-		fmt.Println(err)
+		misc.Log().WithFields(logrus.Fields{
+			"err": err,
+		}).Error("Read json lab file")
 	}
 	err = json.Unmarshal(files, &labyrinth)
 	if err != nil {
-		fmt.Println(err)
+		misc.Log().WithFields(logrus.Fields{
+			"err": err,
+		}).Error("Unmarshal json lab file")
 	}
 }
 

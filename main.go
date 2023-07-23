@@ -12,25 +12,13 @@ import (
 
 	imgui "github.com/AllenDang/cimgui-go"
 	"github.com/hpcloud/tail"
+	"github.com/sirupsen/logrus"
 )
-
-var (
-	Tststr = "test.ini"
-)
-
-// заменить этим
-
-// func (self IO) SetIniFilename(v string) {
-// 	vArg, vFin := wrapString(v)
-// 	C.wrap_ImGuiIO_SetIniFilename(self.handle(), vArg)
-
-// 	vFin()
-// }
 
 func init() {
 	//check if the required folders and files are available
 	executablePath, _ := os.Getwd()
-	// fmt.Printf("executablePath: %v\n", executablePath)
+	misc.Log().Debugf(".exe path: %s", executablePath)
 
 	//font
 	config.App.Vars.FontDirectory = fmt.Sprintf("%s\\fonts\\ttf\\", executablePath)
@@ -39,25 +27,34 @@ func init() {
 	if _, err := os.Stat(config.App.Vars.FontDirectory); err != nil {
 		if os.IsNotExist(err) {
 			//Shows error if file not exists
-			fmt.Println("font Folder does not exist.")
+			misc.Log().Info("Font folder does not exist")
 			os.MkdirAll(config.App.Vars.FontDirectory, 0777)
+			misc.Log().Info("Font folder create")
 			misc.DownloadFile(config.App.Vars.FontDirectory, "fa-brands-400.ttf", "https://github.com/Wolf65/PoEHelper/raw/main/fonts/ttf/fa-brands-400.ttf")
+			misc.Log().Info("fa-brands-400.ttf download")
 			misc.DownloadFile(config.App.Vars.FontDirectory, "fa-solid-900.ttf", "https://github.com/Wolf65/PoEHelper/raw/main/fonts/ttf/fa-solid-900.ttf")
+			misc.Log().Info("fa-solid-900.ttf download")
 			misc.DownloadFile(config.App.Vars.FontDirectory, "JetBrainsMono-Medium.ttf", "https://github.com/Wolf65/PoEHelper/raw/main/fonts/ttf/JetBrainsMono-Medium.ttf")
+			misc.Log().Info("JetBrainsMono-Medium.ttf download")
 		} else {
-			// Shows success message like file is there
+			misc.Log().Warnf("Font folder err: %s", err)
 		}
+	} else {
+		misc.Log().Info("Font folder exists")
 	}
 
 	//lab
 	if _, err := os.Stat(config.App.Vars.LabDirectory); err != nil {
 		if os.IsNotExist(err) {
 			//Shows error if file not exists
-			fmt.Println("lab Folder does not exist.")
+			misc.Log().Info("Lab folder does not exist")
 			os.MkdirAll(config.App.Vars.LabDirectory, 0777)
+			misc.Log().Info("Lab folder create")
 		} else {
-			// Shows success message like file is there
+			misc.Log().Warnf("Lab folder err: %s", err)
 		}
+	} else {
+		misc.Log().Info("Lab folder exists")
 	}
 }
 
@@ -104,7 +101,9 @@ func main() {
 			Location: &tail.SeekInfo{Offset: 0, Whence: 2},
 		})
 		if err != nil {
-			fmt.Println(err)
+			misc.Log().WithFields(logrus.Fields{
+				"err": err,
+			}).Error("Watch PoE Client.txt")
 		}
 
 		for {
