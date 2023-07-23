@@ -48,11 +48,17 @@ func LabMapWindow(isOpen bool) {
 		imgui.Separator()
 		imgui.Text(labyrinth.Weapon)
 		imgui.Separator()
-		imgui.Text(labyrinth.Phase1)
-		imgui.Text(labyrinth.Phase2)
+		imgui.Text("Phase:")
+		imgui.BulletText(labyrinth.Phase1)
+		imgui.BulletText(labyrinth.Phase2)
 		imgui.Spacing()
-		imgui.Text(labyrinth.Trap1)
-		imgui.Text(labyrinth.Trap2)
+		imgui.Text("Traps:")
+		if labyrinth.Trap1 != "NoTrap" {
+			imgui.BulletText(labyrinth.Trap1)
+		}
+		if labyrinth.Trap2 != "NoTrap" {
+			imgui.BulletText(labyrinth.Trap2)
+		}
 		imgui.Separator()
 
 		imgui.EndChild()
@@ -171,7 +177,7 @@ type Labyrinth struct {
 }
 
 func maps() {
-	files, err := os.ReadFile("uber-2023-06-24.json")
+	files, err := os.ReadFile("lab/uber-2023-06-24.json")
 	if err != nil {
 		misc.Log().WithFields(logrus.Fields{
 			"err": err,
