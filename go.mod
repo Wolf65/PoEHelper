@@ -7,6 +7,7 @@ replace github.com/AllenDang/cimgui-go => S:\goProject\cimgui-go
 require (
 	github.com/AllenDang/cimgui-go v0.0.0-20230619023324-e4dae85333e0
 	github.com/hpcloud/tail v1.0.0
+	github.com/sirupsen/logrus v1.9.3
 	golang.org/x/exp v0.0.0-20230522175609-2e198f4a06a1
 )
 
