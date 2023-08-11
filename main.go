@@ -27,13 +27,17 @@ func init() {
 	if _, err := os.Stat(config.App.Vars.FontDirectory); err != nil {
 		if os.IsNotExist(err) {
 			misc.Log().Warn("Font folder does not exist")
-			os.MkdirAll(config.App.Vars.FontDirectory, 0777)
+			if os.MkdirAll(config.App.Vars.FontDirectory, 0755) != nil {
+				misc.Log().WithFields(logrus.Fields{
+					"err": err,
+				}).Error("Font folder mkdirAll")
+			}
 			misc.Log().Info("Font folder create")
 			misc.CheckAndDownloadFont()
 		} else {
 			misc.Log().WithFields(logrus.Fields{
 				"err": err,
-			}).Warn("Font folder err")
+			}).Warn("Font folder")
 		}
 	} else {
 		misc.Log().Debug("Font folder exists")
@@ -44,12 +48,16 @@ func init() {
 	if _, err := os.Stat(config.App.Vars.LabDirectory); err != nil {
 		if os.IsNotExist(err) {
 			misc.Log().Warn("Lab folder does not exist")
-			os.MkdirAll(config.App.Vars.LabDirectory, 0777)
+			if os.MkdirAll(config.App.Vars.LabDirectory, 0755) != nil {
+				misc.Log().WithFields(logrus.Fields{
+					"err": err,
+				}).Error("Lab folder mkdirAll")
+			}
 			misc.Log().Info("Lab folder create")
 		} else {
 			misc.Log().WithFields(logrus.Fields{
 				"err": err,
-			}).Warn("Lab folder err")
+			}).Warn("Lab folder")
 		}
 	} else {
 		misc.Log().Debug("Lab folder exists")
@@ -57,12 +65,11 @@ func init() {
 }
 
 func main() {
-
-	config.App.Vars.Backend = imgui.CreateBackend(imgui.NewGLFWBackend())
-	config.App.Vars.Backend.SetBgColor(imgui.NewVec4(0.5, 0.5, 0.5, 1.0))
-	config.App.Vars.Backend.CreateWindow(config.App.Info.ProjectName, 1200, 900, 0)
-	config.App.Vars.Backend.SetTargetFPS(60)
-	x, y := config.App.Vars.Backend.DisplaySize()
+	backend := imgui.CreateBackend(imgui.NewGLFWBackend())
+	backend.SetBgColor(imgui.NewVec4(0.5, 0.5, 0.5, 1.0))
+	backend.CreateWindow(config.App.Info.ProjectName, 1200, 900, 0)
+	backend.SetTargetFPS(60)
+	x, y := backend.DisplaySize()
 
 	config.App.Vars.DisplaySize = imgui.Vec2{X: float32(x), Y: float32(y)}
 
@@ -81,7 +88,7 @@ func main() {
 			case <-refreshTicketDone:
 				return
 			case <-refreshTicket.C:
-				imgui.GetBackend().Refresh()
+				backend.Refresh()
 			}
 		}
 	}()
@@ -130,7 +137,8 @@ func main() {
 		// 	fmt.Println(line.Text)
 		// }
 	}()
-	config.App.Vars.Backend.Run(loop)
+
+	backend.Run(loop)
 }
 
 func loop() {
@@ -145,6 +153,7 @@ func loop() {
 	window.LabMapWindow(config.App.LabMap.IsOpen)
 	window.Changelog(config.App.Changelog.IsOpen)
 	window.LabCompassWindow(config.App.LabCompass.IsOpen)
+	window.TradeWindow(config.App.Trade.IsOpen)
 
 }
 

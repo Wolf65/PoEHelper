@@ -19,14 +19,13 @@ type application struct {
 	LabMap     labMap
 	LabCompass labCompass
 	Changelog  changelog
+	Trade      trade
 }
 type info struct {
 	ProjectName    string
 	ProjectVersion string
 }
 type vars struct {
-	Backend imgui.Backend
-	//
 	ExecutablePath string
 	FontDirectory  string
 	LabDirectory   string
@@ -85,6 +84,13 @@ type changelog struct {
 
 	ChangelogPath string
 }
+type trade struct {
+	Title       string
+	IsOpen      bool
+	IsPinned    bool
+	WindowSize  imgui.Vec2
+	WindowFlags imgui.WindowFlags
+}
 
 //init
 
@@ -95,9 +101,6 @@ var App = application{
 	},
 	//
 	Vars: vars{
-		Backend: nil,
-		// set in main.go DisplaySize
-
 		ExecutablePath: "",
 		FontDirectory:  "",
 		LabDirectory:   "",
@@ -155,5 +158,12 @@ var App = application{
 		WindowFlags: imgui.WindowFlagsNoResize,
 
 		ChangelogPath: "Changelog.txt",
+	},
+	Trade: trade{
+		Title:       "Trade",
+		IsOpen:      true,
+		IsPinned:    true,
+		WindowSize:  imgui.Vec2{X: 300, Y: 100},
+		WindowFlags: imgui.WindowFlagsNoResize | imgui.WindowFlagsNoMove,
 	},
 }

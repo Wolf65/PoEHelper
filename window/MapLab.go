@@ -19,7 +19,7 @@ var (
 
 func init() {
 	misc.Log().Debug("init map lab")
-	registrationSettingsPages(settingPage{"Lab map", "pegeLabMap", pageLabMap})
+	registrationSettingsPages(settingPage{"Lab map", "pageLabMap", pageLabMap})
 	maps()
 	misc.Log().Debug("register map lab pages")
 }

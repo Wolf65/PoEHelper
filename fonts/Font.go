@@ -29,15 +29,28 @@ type Font struct {
 }
 
 func AppendDefaultFont(io imgui.IO) {
-	ioF := imgui.CurrentIO()
+	jetBrainsConfig := imgui.NewFontConfig()
 
-	fontFa := imgui.NewFontConfig()
-	fontFa.SetMergeMode(true)
-	fontFa.SetPixelSnapH(true)
+	fontAwesomeConfig := imgui.NewFontConfig()
+	fontAwesomeConfig.SetMergeMode(true)
+	fontAwesomeConfig.SetPixelSnapH(true)
 
-	ioF.Fonts().AddFontFromFileTTFV("fonts/ttf/JetBrainsMono-Medium.ttf", baseFontSize, 0, (*imgui.Wchar)(unsafe.Pointer(&RusRanges[0])))
-	ioF.Fonts().AddFontFromFileTTFV(fmt.Sprintf("fonts/ttf/%s", IconsFontAwesome6.Filenames[1][1]), iconFontSize, fontFa, (*imgui.Wchar)(unsafe.Pointer(&IconRange[0])))
-	ioF.Fonts().AddFontFromFileTTFV(fmt.Sprintf("fonts/ttf/%s", IconsFontAwesome6Brands.Filenames[0][1]), iconFontSize, fontFa, (*imgui.Wchar)(unsafe.Pointer(&IconBrandsRange[0])))
+	io.Fonts().AddFontFromFileTTFV("fonts/ttf/JetBrainsMono-Medium.ttf",
+		baseFontSize,
+		jetBrainsConfig,
+		(*imgui.Wchar)(unsafe.Pointer(&RusRanges[0])))
 
-	ioF.Fonts().Build()
+	io.Fonts().AddFontFromFileTTFV(fmt.Sprintf("fonts/ttf/%s",
+		IconsFontAwesome6.Filenames[1][1]),
+		iconFontSize,
+		fontAwesomeConfig,
+		(*imgui.Wchar)(unsafe.Pointer(&IconRange[0])))
+
+	io.Fonts().AddFontFromFileTTFV(fmt.Sprintf("fonts/ttf/%s",
+		IconsFontAwesome6Brands.Filenames[0][1]),
+		iconFontSize,
+		fontAwesomeConfig,
+		(*imgui.Wchar)(unsafe.Pointer(&IconBrandsRange[0])))
+
+	io.Fonts().Build()
 }

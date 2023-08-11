@@ -19,9 +19,11 @@ func PinWindow(isOpen bool) {
 		imgui.Dummy(imgui.Vec2{X: (imgui.ContentRegionAvail().X-config.App.Vars.BaseLongButton.X)/2 - config.App.Vars.ItemSpacing.X, Y: 19})
 		imgui.SameLine()
 		if imgui.ButtonV("Save", config.App.Vars.BaseLongButton) {
+			config.App.Pin.IsOpen = false
 			config.App.Dockbar.IsPinned = true
 			config.App.Dockbar.WindowFlags ^= imgui.WindowFlagsNoMove
-			config.App.Pin.IsOpen = false
+			config.App.Trade.IsOpen = true
+			config.App.Trade.WindowFlags ^= imgui.WindowFlagsNoMove
 		}
 		imgui.End()
 	}

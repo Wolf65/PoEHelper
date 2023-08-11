@@ -27,6 +27,8 @@ func DockbarWindow(isOpen bool) {
 				config.App.Pin.IsOpen = true
 				config.App.Dockbar.IsPinned = false
 				config.App.Dockbar.WindowFlags ^= imgui.WindowFlagsNoMove
+				config.App.Trade.IsPinned = false
+				config.App.Trade.WindowFlags ^= imgui.WindowFlagsNoMove
 			}
 			imgui.SameLine()
 			if imgui.ButtonV("Lab", config.App.Vars.DockbarButton) {
@@ -38,7 +40,7 @@ func DockbarWindow(isOpen bool) {
 			}
 			imgui.SameLine()
 			if imgui.ButtonV(fonts.IconsFontAwesome6.Icons["ArrowRightFromBracket"], config.App.Vars.DockbarButton) {
-				config.App.Vars.Backend.SetShouldClose(true)
+				imgui.GetBackend().SetShouldClose(true)
 			}
 
 			imgui.End()
