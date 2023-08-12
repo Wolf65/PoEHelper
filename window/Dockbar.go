@@ -9,6 +9,7 @@ import (
 
 func DockbarWindow(isOpen bool) {
 	if isOpen {
+		imgui.SetNextWindowPos(imgui.Vec2{X: 200, Y: 700})
 		if config.App.Dockbar.IsPinned {
 			imgui.SetNextWindowSize(config.App.Dockbar.WindowSize)
 			imgui.BeginV(config.App.Dockbar.Title, &config.App.Dockbar.IsOpen, config.App.Dockbar.WindowFlags)

@@ -22,7 +22,7 @@ func PinWindow(isOpen bool) {
 			config.App.Pin.IsOpen = false
 			config.App.Dockbar.IsPinned = true
 			config.App.Dockbar.WindowFlags ^= imgui.WindowFlagsNoMove
-			config.App.Trade.IsOpen = true
+			config.App.Trade.IsPinned = true
 			config.App.Trade.WindowFlags ^= imgui.WindowFlagsNoMove
 		}
 		imgui.End()

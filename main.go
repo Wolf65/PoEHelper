@@ -68,6 +68,7 @@ func main() {
 	backend := imgui.CreateBackend(imgui.NewGLFWBackend())
 	backend.SetBgColor(imgui.NewVec4(0.5, 0.5, 0.5, 1.0))
 	backend.CreateWindow(config.App.Info.ProjectName, 1200, 900, 0)
+	backend.SetWindowPos(0, 0)
 	backend.SetTargetFPS(60)
 	x, y := backend.DisplaySize()
 

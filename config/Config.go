@@ -163,7 +163,7 @@ var App = application{
 		Title:       "Trade",
 		IsOpen:      true,
 		IsPinned:    true,
-		WindowSize:  imgui.Vec2{X: 300, Y: 100},
+		WindowSize:  imgui.Vec2{X: 300, Y: 200},
 		WindowFlags: imgui.WindowFlagsNoResize | imgui.WindowFlagsNoMove,
 	},
 }
