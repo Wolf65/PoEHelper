@@ -3,10 +3,10 @@ module poehelper
 go 1.20
 
 require (
-	github.com/AllenDang/cimgui-go v0.0.0-20230809030658-606eb8908b6c
+	github.com/AllenDang/cimgui-go v0.0.0-20230817181741-d3d2889eca19
 	github.com/hpcloud/tail v1.0.0
 	github.com/sirupsen/logrus v1.9.3
-	golang.org/x/exp v0.0.0-20230809150735-7b3493d9a819
+	golang.org/x/exp v0.0.0-20230817173708-d852ddb80c63
 )
 
 require (

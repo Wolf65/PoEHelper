@@ -80,6 +80,8 @@ func main() {
 
 	config.App.Vars.ItemSpacing = imgui.CurrentIO().Ctx().Style().ItemSpacing()
 
+	imgui.CurrentIO().SetIniFilename("test")
+
 	refreshTicket := time.NewTicker(500 * time.Millisecond)
 	refreshTicketDone := make(chan bool)
 
@@ -138,6 +140,10 @@ func main() {
 		// 	fmt.Println(line.Text)
 		// }
 	}()
+
+	backend.SetCloseCallback(func(b imgui.Backend) {
+		fmt.Println("window is closing")
+	})
 
 	backend.Run(loop)
 }

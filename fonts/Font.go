@@ -2,18 +2,16 @@ package fonts
 
 import (
 	"fmt"
-	"unsafe"
-
 	imgui "github.com/AllenDang/cimgui-go"
 )
 
 var (
-	RusRanges       = []uint16{0x0020, 0xA69F, 0}
-	IconRange       = []uint16{uint16(IconsFontAwesome6.Min), uint16(IconsFontAwesome6.Max16), 0}
-	IconBrandsRange = []uint16{uint16(IconsFontAwesome6Brands.Min), uint16(IconsFontAwesome6Brands.Max16), 0}
+	IconRange       = []imgui.Wchar{IconsFontAwesome6.Min, IconsFontAwesome6.Max, 0}
+	IconBrandsRange = []imgui.Wchar{IconsFontAwesome6Brands.Min, IconsFontAwesome6Brands.Max, 0}
 
-	baseFontSize float32 = 13
-	iconFontSize float32 = 13
+	baseFontSize              float32 = 13
+	fontAwesomeFontSize       float32 = baseFontSize * 4 / 3
+	fontAwesomeBrandsFontSize float32 = baseFontSize * 6 / 3
 )
 
 type Font struct {
@@ -23,34 +21,60 @@ type Font struct {
 	Filenames [][2]string
 	// The range of Unicode code points is given by [Min, Max). The largest
 	// 16-bit code point is stored in Max16.
-	Min, Max16, Max int
+	Min, Max16, Max imgui.Wchar
 	// Icons stores the mapping from user-friendly names to code points.
 	Icons map[string]string
 }
 
 func AppendDefaultFont(io imgui.IO) {
-	jetBrainsConfig := imgui.NewFontConfig()
+	// Base Font
 
-	fontAwesomeConfig := imgui.NewFontConfig()
-	fontAwesomeConfig.SetMergeMode(true)
-	fontAwesomeConfig.SetPixelSnapH(true)
+	baseConfig := imgui.NewFontConfig()
+	baseConfig.SetPixelSnapH(true)
+
+	baseRange := imgui.NewGlyphRange()
+	baseBuilder := imgui.NewFontGlyphRangesBuilder()
+	baseBuilder.AddRanges(io.Fonts().GlyphRangesCyrillic())
+	//jetBrainsRangeBuilder.AddRanges(io.Fonts().GlyphRangesKorean())
+	//jetBrainsRangeBuilder.AddRanges(io.Fonts().GlyphRangesJapanese())
+	//jetBrainsRangeBuilder.AddRanges(io.Fonts().GlyphRangesChineseFull())
+	//jetBrainsRangeBuilder.AddRanges(io.Fonts().GlyphRangesGreek())
+	//jetBrainsRangeBuilder.AddRanges(io.Fonts().GlyphRangesThai())
+	//jetBrainsRangeBuilder.AddRanges(io.Fonts().GlyphRangesVietnamese())
+	baseBuilder.BuildRanges(baseRange)
 
 	io.Fonts().AddFontFromFileTTFV("fonts/ttf/JetBrainsMono-Medium.ttf",
 		baseFontSize,
-		jetBrainsConfig,
-		(*imgui.Wchar)(unsafe.Pointer(&RusRanges[0])))
+		baseConfig,
+		baseRange.Data())
+
+	// FontAwesome
+	fontAwesomeConfig := imgui.NewFontConfig()
+	fontAwesomeConfig.SetMergeMode(true)
+	fontAwesomeConfig.SetGlyphMinAdvanceX(fontAwesomeFontSize)
+	fontAwesomeConfig.SetGlyphMaxAdvanceX(fontAwesomeFontSize)
+	fontAwesomeConfig.SetPixelSnapH(true)
+	fontAwesomeConfig.SetGlyphOffset(imgui.Vec2{X: 0, Y: 2})
 
 	io.Fonts().AddFontFromFileTTFV(fmt.Sprintf("fonts/ttf/%s",
 		IconsFontAwesome6.Filenames[1][1]),
-		iconFontSize,
+		fontAwesomeFontSize,
 		fontAwesomeConfig,
-		(*imgui.Wchar)(unsafe.Pointer(&IconRange[0])))
+		imgui.SliceToPtr(IconRange))
+
+	// FontAwesome Brands
+	fontAwesomeBrandsConfig := imgui.NewFontConfig()
+	fontAwesomeBrandsConfig.SetMergeMode(true)
+	fontAwesomeBrandsConfig.SetGlyphMinAdvanceX(fontAwesomeBrandsFontSize)
+	fontAwesomeBrandsConfig.SetGlyphMaxAdvanceX(fontAwesomeBrandsFontSize)
+	fontAwesomeBrandsConfig.SetPixelSnapH(true)
+	fontAwesomeBrandsConfig.SetGlyphOffset(imgui.Vec2{X: 1, Y: 6})
 
 	io.Fonts().AddFontFromFileTTFV(fmt.Sprintf("fonts/ttf/%s",
 		IconsFontAwesome6Brands.Filenames[0][1]),
-		iconFontSize,
-		fontAwesomeConfig,
-		(*imgui.Wchar)(unsafe.Pointer(&IconBrandsRange[0])))
+		fontAwesomeBrandsFontSize,
+		fontAwesomeBrandsConfig,
+		imgui.SliceToPtr(IconBrandsRange))
 
 	io.Fonts().Build()
 }

@@ -5,6 +5,7 @@ import (
 	"poehelper/config"
 	"poehelper/fonts"
 	"poehelper/misc"
+	"runtime"
 
 	"golang.org/x/exp/slices"
 
@@ -12,7 +13,7 @@ import (
 )
 
 var (
-	inputPath string
+	content string = "123"
 
 	settingPages []settingPage
 )
@@ -88,20 +89,30 @@ func SettingsWindow(isOpen bool) {
 	}
 }
 
+func callback(data imgui.InputTextCallbackData) int {
+	fmt.Println("got call back")
+	return 0
+}
+
 func pageGeneral() {
-	imgui.AlignTextToFramePadding()
-	imgui.Text("Path to PoE logs")
-	imgui.SameLine()
-	imgui.PushItemWidth(imgui.ContentRegionAvail().X)
-	imgui.InputTextWithHint("##inputTextLogPath", "c:/..", &inputPath, imgui.InputTextFlagsAllowTabInput, nil)
+	//imgui.AlignTextToFramePadding()
+	//imgui.Text("Path to PoE logs")
+	//imgui.SameLine()
+	//imgui.PushItemWidth(imgui.ContentRegionAvail().X)
+	//imgui.InputTextWithHint("Input##inputTextLogPath", "test", &inputPath, 0 /*imgui.InputTextFlagsAllowTabInput*/, callback)
+	//imgui.Text(inputPath)
+	imgui.InputTextWithHint("test", "test1", &content, 0, callback)
+	//imgui.InputTextWithHint("Name", "write your name here", &content, 0, callback)
+	imgui.Text(content)
 }
 
 func pageAbout() {
 	imgui.Text(config.App.Info.ProjectName)
 	imgui.Spacing()
 	imgui.Text("Used:")
-	imgui.BulletText(fmt.Sprintf("Cimgui-go (Dear ImGui %s)", imgui.Version()))
-	imgui.BulletText("Icons FontAwesome6")
+	imgui.BulletText(fmt.Sprintf("Golang: %s", runtime.Version()))
+	imgui.BulletText(fmt.Sprintf("UI: Cimgui-go (Dear ImGui %s)", imgui.Version()))
+	imgui.BulletText("Icons: FontAwesome6")
 	imgui.Spacing()
 	imgui.AlignTextToFramePadding()
 	imgui.Text("History: ")
@@ -111,7 +122,7 @@ func pageAbout() {
 	}
 	imgui.Spacing()
 	imgui.Text("Social links:")
-	imgui.ButtonV(fonts.IconsFontAwesome6Brands.Icons["Github"], imgui.NewVec2(32, 32))
+	imgui.ButtonV(fonts.IconsFontAwesome6Brands.Icons["Github"], imgui.NewVec2(45, 45))
 	imgui.SameLine()
-	imgui.ButtonV(fonts.IconsFontAwesome6Brands.Icons["Telegram"], imgui.NewVec2(32, 32))
+	imgui.ButtonV(fonts.IconsFontAwesome6Brands.Icons["Telegram"], imgui.NewVec2(45, 45))
 }

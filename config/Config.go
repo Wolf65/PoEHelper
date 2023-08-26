@@ -33,7 +33,7 @@ type vars struct {
 	DisplaySize    imgui.Vec2
 	BaseButton     imgui.Vec2
 	BaseLongButton imgui.Vec2
-	DockbarButton  imgui.Vec2
+	SquareButton   imgui.Vec2
 	ItemSpacing    imgui.Vec2
 	//
 	IsOpenMetrics bool
@@ -108,7 +108,7 @@ var App = application{
 		BaseButton:     imgui.Vec2{X: 80, Y: 19},
 		BaseLongButton: imgui.Vec2{X: 100, Y: 19},
 		// set in main.go ItemSpacing
-		DockbarButton: imgui.Vec2{X: 45, Y: 45},
+		SquareButton: imgui.Vec2{X: 45, Y: 45},
 		//
 		IsOpenMetrics: false,
 		IsOpenDemo:    false,
@@ -163,7 +163,7 @@ var App = application{
 		Title:       "Trade",
 		IsOpen:      true,
 		IsPinned:    true,
-		WindowSize:  imgui.Vec2{X: 300, Y: 200},
-		WindowFlags: imgui.WindowFlagsNoResize | imgui.WindowFlagsNoMove,
+		WindowSize:  imgui.Vec2{X: 400, Y: 200},
+		WindowFlags: imgui.WindowFlagsNoResize, // | imgui.WindowFlagsNoMove,
 	},
 }

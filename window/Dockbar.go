@@ -14,17 +14,17 @@ func DockbarWindow(isOpen bool) {
 			imgui.SetNextWindowSize(config.App.Dockbar.WindowSize)
 			imgui.BeginV(config.App.Dockbar.Title, &config.App.Dockbar.IsOpen, config.App.Dockbar.WindowFlags)
 
-			imgui.ButtonV(fonts.IconsFontAwesome6.Icons["House"], config.App.Vars.DockbarButton)
+			imgui.ButtonV(fonts.IconsFontAwesome6.Icons["House"], config.App.Vars.SquareButton)
 			imgui.SameLine()
-			if imgui.ButtonV(fonts.IconsFontAwesome6.Icons["Info"], config.App.Vars.DockbarButton) {
+			if imgui.ButtonV(fonts.IconsFontAwesome6.Icons["Info"], config.App.Vars.SquareButton) {
 				config.App.Vars.IsOpenMetrics = true
 			}
 			imgui.SameLine()
-			if imgui.ButtonV("Demo", config.App.Vars.DockbarButton) {
+			if imgui.ButtonV("Demo", config.App.Vars.SquareButton) {
 				config.App.Vars.IsOpenDemo = true
 			}
 			imgui.SameLine()
-			if imgui.ButtonV(fonts.IconsFontAwesome6.Icons["Thumbtack"], config.App.Vars.DockbarButton) {
+			if imgui.ButtonV(fonts.IconsFontAwesome6.Icons["Thumbtack"], config.App.Vars.SquareButton) {
 				config.App.Pin.IsOpen = true
 				config.App.Dockbar.IsPinned = false
 				config.App.Dockbar.WindowFlags ^= imgui.WindowFlagsNoMove
@@ -32,15 +32,15 @@ func DockbarWindow(isOpen bool) {
 				config.App.Trade.WindowFlags ^= imgui.WindowFlagsNoMove
 			}
 			imgui.SameLine()
-			if imgui.ButtonV("Lab", config.App.Vars.DockbarButton) {
+			if imgui.ButtonV("Lab", config.App.Vars.SquareButton) {
 				config.App.LabMap.IsOpen = true
 			}
 			imgui.SameLine()
-			if imgui.ButtonV(fonts.IconsFontAwesome6.Icons["Gear"], config.App.Vars.DockbarButton) {
+			if imgui.ButtonV(fonts.IconsFontAwesome6.Icons["Gear"], config.App.Vars.SquareButton) {
 				config.App.Setting.IsOpen = true
 			}
 			imgui.SameLine()
-			if imgui.ButtonV(fonts.IconsFontAwesome6.Icons["ArrowRightFromBracket"], config.App.Vars.DockbarButton) {
+			if imgui.ButtonV(fonts.IconsFontAwesome6.Icons["ArrowRightFromBracket"], config.App.Vars.SquareButton) {
 				imgui.GetBackend().SetShouldClose(true)
 			}
 
