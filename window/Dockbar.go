@@ -7,11 +7,16 @@ import (
 	imgui "github.com/AllenDang/cimgui-go"
 )
 
-func DockbarWindow(isOpen bool) {
-	if isOpen {
-		imgui.SetNextWindowPos(imgui.Vec2{X: 200, Y: 700})
+func DockbarWindow(isOpen *bool) {
+	style := imgui.CurrentIO().Ctx().Style()
+	winSize := imgui.Vec2{
+		X: style.WindowPadding().X*2 + config.App.Vars.SquareButton.X*7 + style.ItemSpacing().X*6,
+		Y: style.WindowPadding().Y*2 + config.App.Vars.SquareButton.Y,
+	}
+	if *isOpen {
 		if config.App.Dockbar.IsPinned {
-			imgui.SetNextWindowSize(config.App.Dockbar.WindowSize)
+			imgui.SetNextWindowSize(winSize)
+			imgui.SetNextWindowPosV(imgui.Vec2{X: 3440/2 - winSize.X/2, Y: 1200}, imgui.CondFirstUseEver, imgui.Vec2{X: 0, Y: 0})
 			imgui.BeginV(config.App.Dockbar.Title, &config.App.Dockbar.IsOpen, config.App.Dockbar.WindowFlags)
 
 			imgui.ButtonV(fonts.IconsFontAwesome6.Icons["House"], config.App.Vars.SquareButton)
@@ -46,11 +51,14 @@ func DockbarWindow(isOpen bool) {
 
 			imgui.End()
 		} else {
-			imgui.SetNextWindowSize(config.App.Dockbar.WindowSize)
+			imgui.SetNextWindowSize(winSize)
 			imgui.BeginV(config.App.Dockbar.Title, &config.App.Dockbar.IsOpen, config.App.Dockbar.WindowFlags)
 
 			titleSize := imgui.CalcTextSize(config.App.Dockbar.Title)
-			imgui.Dummy(imgui.Vec2{X: (imgui.ContentRegionAvail().X-titleSize.X)/2 - config.App.Vars.ItemSpacing.X, Y: 19})
+			imgui.Dummy(imgui.Vec2{
+				X: (imgui.ContentRegionAvail().X-titleSize.X)/2 - style.ItemSpacing().X,
+				Y: 0,
+			})
 			imgui.SameLine()
 			imgui.Text(config.App.Dockbar.Title)
 

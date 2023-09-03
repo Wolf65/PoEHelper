@@ -26,10 +26,10 @@ type Font struct {
 	Icons map[string]string
 }
 
-func AppendDefaultFont(io imgui.IO) {
+func AppendDefaultFont(io *imgui.IO) {
 	// Base Font
 
-	baseConfig := imgui.NewFontConfig()
+	baseConfig := *imgui.NewFontConfig()
 	baseConfig.SetPixelSnapH(true)
 
 	baseRange := imgui.NewGlyphRange()
@@ -45,11 +45,11 @@ func AppendDefaultFont(io imgui.IO) {
 
 	io.Fonts().AddFontFromFileTTFV("fonts/ttf/JetBrainsMono-Medium.ttf",
 		baseFontSize,
-		baseConfig,
+		&baseConfig,
 		baseRange.Data())
 
 	// FontAwesome
-	fontAwesomeConfig := imgui.NewFontConfig()
+	fontAwesomeConfig := *imgui.NewFontConfig()
 	fontAwesomeConfig.SetMergeMode(true)
 	fontAwesomeConfig.SetGlyphMinAdvanceX(fontAwesomeFontSize)
 	fontAwesomeConfig.SetGlyphMaxAdvanceX(fontAwesomeFontSize)
@@ -59,11 +59,11 @@ func AppendDefaultFont(io imgui.IO) {
 	io.Fonts().AddFontFromFileTTFV(fmt.Sprintf("fonts/ttf/%s",
 		IconsFontAwesome6.Filenames[1][1]),
 		fontAwesomeFontSize,
-		fontAwesomeConfig,
+		&fontAwesomeConfig,
 		imgui.SliceToPtr(IconRange))
 
 	// FontAwesome Brands
-	fontAwesomeBrandsConfig := imgui.NewFontConfig()
+	fontAwesomeBrandsConfig := *imgui.NewFontConfig()
 	fontAwesomeBrandsConfig.SetMergeMode(true)
 	fontAwesomeBrandsConfig.SetGlyphMinAdvanceX(fontAwesomeBrandsFontSize)
 	fontAwesomeBrandsConfig.SetGlyphMaxAdvanceX(fontAwesomeBrandsFontSize)
@@ -73,7 +73,7 @@ func AppendDefaultFont(io imgui.IO) {
 	io.Fonts().AddFontFromFileTTFV(fmt.Sprintf("fonts/ttf/%s",
 		IconsFontAwesome6Brands.Filenames[0][1]),
 		fontAwesomeBrandsFontSize,
-		fontAwesomeBrandsConfig,
+		&fontAwesomeBrandsConfig,
 		imgui.SliceToPtr(IconBrandsRange))
 
 	io.Fonts().Build()

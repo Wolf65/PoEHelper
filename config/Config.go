@@ -13,13 +13,14 @@ type application struct {
 
 	Vars vars
 
-	Setting    setting
-	Pin        pin
-	Dockbar    dockbar
-	LabMap     labMap
-	LabCompass labCompass
-	Changelog  changelog
-	Trade      trade
+	Setting     setting
+	Pin         pin
+	Dockbar     dockbar
+	LabMap      labMap
+	LabCompass  labCompass
+	Changelog   changelog
+	Trade       trade
+	FileBrowser fileBrowser
 }
 type info struct {
 	ProjectName    string
@@ -34,7 +35,6 @@ type vars struct {
 	BaseButton     imgui.Vec2
 	BaseLongButton imgui.Vec2
 	SquareButton   imgui.Vec2
-	ItemSpacing    imgui.Vec2
 	//
 	IsOpenMetrics bool
 	IsOpenDemo    bool
@@ -58,7 +58,6 @@ type dockbar struct {
 	Title       string
 	IsOpen      bool
 	IsPinned    bool
-	WindowSize  imgui.Vec2
 	WindowFlags imgui.WindowFlags
 }
 type labMap struct {
@@ -91,13 +90,19 @@ type trade struct {
 	WindowSize  imgui.Vec2
 	WindowFlags imgui.WindowFlags
 }
+type fileBrowser struct {
+	Title       string
+	IsOpen      bool
+	WindowSize  imgui.Vec2
+	WindowFlags imgui.WindowFlags
+}
 
 //init
 
 var App = application{
 	Info: info{
 		ProjectName:    "PoEHelper",
-		ProjectVersion: "0.0.1 dev",
+		ProjectVersion: "0.0.1",
 	},
 	//
 	Vars: vars{
@@ -107,8 +112,7 @@ var App = application{
 
 		BaseButton:     imgui.Vec2{X: 80, Y: 19},
 		BaseLongButton: imgui.Vec2{X: 100, Y: 19},
-		// set in main.go ItemSpacing
-		SquareButton: imgui.Vec2{X: 45, Y: 45},
+		SquareButton:   imgui.Vec2{X: 46, Y: 46},
 		//
 		IsOpenMetrics: false,
 		IsOpenDemo:    false,
@@ -118,7 +122,7 @@ var App = application{
 		Title:       "Settings",
 		IsOpen:      false,
 		IsPinned:    false,
-		WindowSize:  imgui.Vec2{X: 600, Y: 500},
+		WindowSize:  imgui.Vec2{X: 700, Y: 500},
 		WindowFlags: imgui.WindowFlagsNoResize,
 		//
 		SelectPage: "pageGeneral",
@@ -133,7 +137,6 @@ var App = application{
 		Title:       "Dockbar",
 		IsOpen:      true,
 		IsPinned:    true,
-		WindowSize:  imgui.Vec2{X: 380, Y: 61},
 		WindowFlags: imgui.WindowFlagsNoResize | imgui.WindowFlagsNoTitleBar | imgui.WindowFlagsNoMove,
 	},
 	LabMap: labMap{
@@ -165,5 +168,11 @@ var App = application{
 		IsPinned:    true,
 		WindowSize:  imgui.Vec2{X: 400, Y: 200},
 		WindowFlags: imgui.WindowFlagsNoResize, // | imgui.WindowFlagsNoMove,
+	},
+	FileBrowser: fileBrowser{
+		Title:       "File browser",
+		IsOpen:      false,
+		WindowSize:  imgui.Vec2{X: 500, Y: 300},
+		WindowFlags: imgui.WindowFlagsNoCollapse | imgui.WindowFlagsNoResize,
 	},
 }

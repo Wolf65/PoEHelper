@@ -2,17 +2,15 @@ package main
 
 import (
 	"fmt"
+	imgui "github.com/AllenDang/cimgui-go"
+	"github.com/hpcloud/tail"
+	"github.com/sirupsen/logrus"
 	"os"
 	"poehelper/config"
 	"poehelper/fonts"
 	"poehelper/misc"
 	"poehelper/window"
 	"regexp"
-	"time"
-
-	imgui "github.com/AllenDang/cimgui-go"
-	"github.com/hpcloud/tail"
-	"github.com/sirupsen/logrus"
 )
 
 func init() {
@@ -67,39 +65,19 @@ func init() {
 func main() {
 	backend := imgui.CreateBackend(imgui.NewGLFWBackend())
 	backend.SetBgColor(imgui.NewVec4(0.5, 0.5, 0.5, 1.0))
-	backend.CreateWindow(config.App.Info.ProjectName, 1200, 900, 0)
-	backend.SetWindowPos(0, 0)
+	backend.CreateWindow(config.App.Info.ProjectName, 500, 500, 0)
+	backend.SetWindowPos(50, 50)
 	backend.SetTargetFPS(60)
 	x, y := backend.DisplaySize()
 
 	config.App.Vars.DisplaySize = imgui.Vec2{X: float32(x), Y: float32(y)}
 
 	imgui.CurrentIO().SetConfigFlags(imgui.CurrentIO().ConfigFlags() & ^imgui.ConfigFlagsDockingEnable)
+	//imgui.CurrentIO().SetConfigFlags(imgui.CurrentIO().ConfigFlags() & ^imgui.ConfigFlagsDpiEnableScaleViewports)
+
+	imgui.CurrentIO().SetConfigViewportsNoAutoMerge(true)
 
 	fonts.AppendDefaultFont(imgui.CurrentIO())
-
-	config.App.Vars.ItemSpacing = imgui.CurrentIO().Ctx().Style().ItemSpacing()
-
-	imgui.CurrentIO().SetIniFilename("test")
-
-	refreshTicket := time.NewTicker(500 * time.Millisecond)
-	refreshTicketDone := make(chan bool)
-
-	go func() {
-		for {
-			select {
-			case <-refreshTicketDone:
-				return
-			case <-refreshTicket.C:
-				backend.Refresh()
-			}
-		}
-	}()
-
-	defer func() {
-		refreshTicket.Stop()
-		refreshTicketDone <- true
-	}()
 
 	regexpDisplayMessage, _ := regexp.Compile(`^\d{4}/\d{2}/\d{2}\s\d{2}\:\d{2}\:\d{2}\s\d{9}\scffb0719\s\[\w{4}\s\w{6}\s\d{5}\]\s(.*)$`)
 	go func() {
@@ -151,30 +129,31 @@ func main() {
 func loop() {
 	debug()
 
-	metricsWindow(config.App.Vars.IsOpenMetrics)
-	demoWindow(config.App.Vars.IsOpenDemo)
+	metricsWindow(&config.App.Vars.IsOpenMetrics)
+	demoWindow(&config.App.Vars.IsOpenDemo)
 
-	window.DockbarWindow(config.App.Dockbar.IsOpen)
-	window.SettingsWindow(config.App.Setting.IsOpen)
-	window.PinWindow(config.App.Pin.IsOpen)
-	window.LabMapWindow(config.App.LabMap.IsOpen)
-	window.Changelog(config.App.Changelog.IsOpen)
-	window.LabCompassWindow(config.App.LabCompass.IsOpen)
-	window.TradeWindow(config.App.Trade.IsOpen)
+	window.DockbarWindow(&config.App.Dockbar.IsOpen)
+	window.SettingsWindow(&config.App.Setting.IsOpen)
+	window.PinWindow(&config.App.Pin.IsOpen)
+	window.LabMapWindow(&config.App.LabMap.IsOpen)
+	window.Changelog(&config.App.Changelog.IsOpen)
+	window.LabCompassWindow(&config.App.LabCompass.IsOpen)
+	window.TradeWindow(&config.App.Trade.IsOpen)
 
+	misc.FileBrowserWindow(&config.App.FileBrowser.IsOpen)
 }
 
 func debug() {
 }
 
-func metricsWindow(isOpen bool) {
-	if isOpen {
+func metricsWindow(isOpen *bool) {
+	if *isOpen {
 		imgui.ShowMetricsWindowV(&config.App.Vars.IsOpenMetrics)
 	}
 }
 
-func demoWindow(isOpen bool) {
-	if isOpen {
+func demoWindow(isOpen *bool) {
+	if *isOpen {
 		imgui.ShowDemoWindowV(&config.App.Vars.IsOpenDemo)
 	}
 }

@@ -5,6 +5,7 @@ import (
 	imgui "github.com/AllenDang/cimgui-go"
 	"poehelper/config"
 	"poehelper/fonts"
+	"poehelper/misc"
 )
 
 var (
@@ -20,8 +21,9 @@ func init() {
 
 }
 
-func TradeWindow(isOpen bool) {
-	if isOpen {
+func TradeWindow(isOpen *bool) {
+	style := imgui.CurrentIO().Ctx().Style()
+	if *isOpen {
 		if config.App.Trade.IsPinned {
 			imgui.SetNextWindowSize(config.App.Trade.WindowSize)
 			imgui.BeginV(fmt.Sprintf("%s (%v trade offers)###Trade", config.App.Trade.Title, len(cards)), &config.App.Trade.IsOpen, config.App.Trade.WindowFlags)
@@ -36,7 +38,7 @@ func TradeWindow(isOpen bool) {
 			imgui.BeginV(config.App.Trade.Title, &config.App.Trade.IsOpen, config.App.Trade.WindowFlags)
 
 			titleSize := imgui.CalcTextSize(config.App.Trade.Title)
-			imgui.Dummy(imgui.Vec2{X: (imgui.ContentRegionAvail().X-titleSize.X)/2 - config.App.Vars.ItemSpacing.X, Y: 19})
+			imgui.Dummy(imgui.Vec2{X: (imgui.ContentRegionAvail().X-titleSize.X)/2 - style.ItemSpacing().X, Y: 19})
 			imgui.SameLine()
 			imgui.Text(config.App.Trade.Title)
 			imgui.Text(fmt.Sprintf("%v", config.App.Trade.IsPinned))
@@ -74,6 +76,13 @@ func TransactionArrow(t Transaction) string {
 	}
 }
 
+func init() {
+	misc.Log().Debug("init trade")
+	registrationSettingsPages(settingPage{"Trade", "pageTrade", pageTrade})
+	maps()
+	misc.Log().Debug("register trade pages")
+}
+
 func tradeCard(trd *Trade) {
 	if imgui.CollapsingHeaderBoolPtrV(fmt.Sprintf("%s  %s  %v %s##%v",
 		trd.Nick,
@@ -100,5 +109,23 @@ func tradeCard(trd *Trade) {
 		}
 
 		imgui.EndChild()
+	}
+}
+
+var isTFTVBlacklist bool
+
+func pageTrade() {
+	imgui.SeparatorText("TRADE")
+	// https://raw.githubusercontent.com/The-Forbidden-Trove/character_name_blacklist/main/blacklist.txt
+	imgui.Checkbox("Use TFT blacklist", &isTFTVBlacklist)
+	if imgui.TreeNodeStr("Button bay") {
+		imgui.Text("Thanks")
+		imgui.TreePop()
+	}
+	if imgui.TreeNodeStr("Button sell") {
+		imgui.Text("1m")
+		imgui.Text("In {locate name}")
+		imgui.Text("Sold")
+		imgui.TreePop()
 	}
 }

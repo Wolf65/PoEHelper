@@ -3,14 +3,13 @@ module poehelper
 go 1.20
 
 require (
-	github.com/AllenDang/cimgui-go v0.0.0-20230817181741-d3d2889eca19
+	github.com/AllenDang/cimgui-go v0.0.0-20230825100656-022a31c244c1
 	github.com/hpcloud/tail v1.0.0
 	github.com/sirupsen/logrus v1.9.3
 	golang.org/x/exp v0.0.0-20230817173708-d852ddb80c63
 )
 
 require (
-	github.com/BurntSushi/toml v1.3.2
 	github.com/fsnotify/fsnotify v1.6.0 // indirect
 	golang.org/x/sys v0.11.0 // indirect
 	gopkg.in/fsnotify.v1 v1.4.7 // indirect

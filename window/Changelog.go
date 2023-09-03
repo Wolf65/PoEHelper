@@ -13,8 +13,8 @@ var (
 	changelogText = string(text)
 )
 
-func Changelog(isOpen bool) {
-	if isOpen {
+func Changelog(isOpen *bool) {
+	if *isOpen {
 		imgui.SetNextWindowSize(config.App.Changelog.WindowSize)
 		imgui.BeginV(config.App.Changelog.Title, &config.App.Changelog.IsOpen, config.App.Changelog.WindowFlags)
 		imgui.InputTextMultiline("##changelogMultilineText", &changelogText, imgui.ContentRegionAvail(), imgui.InputTextFlagsReadOnly, nil)

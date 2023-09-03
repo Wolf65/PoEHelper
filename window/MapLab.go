@@ -24,8 +24,8 @@ func init() {
 	misc.Log().Debug("register map lab pages")
 }
 
-func LabMapWindow(isOpen bool) {
-	if isOpen || config.TestLog == "You have entered Aspirants' Plaza." {
+func LabMapWindow(isOpen *bool) {
+	if *isOpen || config.TestLog == "You have entered Aspirants' Plaza." {
 		imgui.SetNextWindowSize(config.App.LabMap.WindowSize)
 		imgui.BeginV(config.App.LabMap.Title, &config.App.LabMap.IsOpen, config.App.LabMap.WindowFlags)
 
@@ -76,8 +76,13 @@ func LabMapWindow(isOpen bool) {
 	}
 }
 
+var isAutoLocationDetection bool
+var isAutoDifficultyDetection bool
+
 func pageLabMap() {
-	imgui.Text("Lab map")
+	imgui.SeparatorText("LABYRINTH")
+	imgui.Checkbox("(EXPERIMENTAL) Auto location detection", &isAutoLocationDetection)
+	imgui.Checkbox("(EXPERIMENTAL) Auto difficulty detection", &isAutoDifficultyDetection)
 }
 
 func plotMap() {
@@ -191,8 +196,8 @@ func maps() {
 	}
 }
 
-func LabCompassWindow(isOpen bool) {
-	if isOpen {
+func LabCompassWindow(isOpen *bool) {
+	if *isOpen {
 		imgui.SetNextWindowSize(config.App.LabCompass.WindowSize)
 		imgui.BeginV(config.App.LabCompass.Title, &config.App.LabCompass.IsOpen, config.App.LabCompass.WindowFlags)
 
