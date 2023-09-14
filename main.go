@@ -65,16 +65,16 @@ func init() {
 func main() {
 	backend := imgui.CreateBackend(imgui.NewGLFWBackend())
 	backend.SetBgColor(imgui.NewVec4(0.5, 0.5, 0.5, 1.0))
-	backend.CreateWindow(config.App.Info.ProjectName, 500, 500, 0)
+	backend.SetWindowHint(0x00020004, 0)
+	backend.CreateWindow(config.App.Info.ProjectName, 500, 500, imgui.GLFWWindowFlagsFloating)
 	backend.SetWindowPos(50, 50)
 	backend.SetTargetFPS(60)
 	x, y := backend.DisplaySize()
 
+	imgui.CurrentIO().SetIniFilename("imgui.ini")
 	config.App.Vars.DisplaySize = imgui.Vec2{X: float32(x), Y: float32(y)}
 
 	imgui.CurrentIO().SetConfigFlags(imgui.CurrentIO().ConfigFlags() & ^imgui.ConfigFlagsDockingEnable)
-	//imgui.CurrentIO().SetConfigFlags(imgui.CurrentIO().ConfigFlags() & ^imgui.ConfigFlagsDpiEnableScaleViewports)
-
 	imgui.CurrentIO().SetConfigViewportsNoAutoMerge(true)
 
 	fonts.AppendDefaultFont(imgui.CurrentIO())

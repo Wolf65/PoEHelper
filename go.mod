@@ -1,9 +1,11 @@
 module poehelper
 
-go 1.20
+go 1.21
+
+toolchain go1.21.1
 
 require (
-	github.com/AllenDang/cimgui-go v0.0.0-20230825100656-022a31c244c1
+	github.com/AllenDang/cimgui-go v0.0.0-20230914121740-a353600541d2
 	github.com/hpcloud/tail v1.0.0
 	github.com/sirupsen/logrus v1.9.3
 	golang.org/x/exp v0.0.0-20230817173708-d852ddb80c63

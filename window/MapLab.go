@@ -79,10 +79,16 @@ func LabMapWindow(isOpen *bool) {
 var isAutoLocationDetection bool
 var isAutoDifficultyDetection bool
 
+var e int32
+
 func pageLabMap() {
 	imgui.SeparatorText("LABYRINTH")
+	imgui.RadioButtonIntPtr("Full", &e, 0)
+	imgui.SameLine()
+	imgui.RadioButtonIntPtr("Compass", &e, 1)
 	imgui.Checkbox("(EXPERIMENTAL) Auto location detection", &isAutoLocationDetection)
 	imgui.Checkbox("(EXPERIMENTAL) Auto difficulty detection", &isAutoDifficultyDetection)
+
 }
 
 func plotMap() {

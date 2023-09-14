@@ -46,6 +46,7 @@ func AppendDefaultFont(io *imgui.IO) {
 	io.Fonts().AddFontFromFileTTFV("fonts/ttf/JetBrainsMono-Medium.ttf",
 		baseFontSize,
 		&baseConfig,
+		//imgui.CurrentIO().Fonts().GlyphRangesCyrillic())
 		baseRange.Data())
 
 	// FontAwesome
