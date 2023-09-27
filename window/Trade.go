@@ -22,6 +22,9 @@ func init() {
 }
 
 func TradeWindow(isOpen *bool) {
+	if config.App.Setting.IsOpen {
+		misc.SelectableSettingItem("Trade", pageTrade)
+	}
 	style := imgui.CurrentIO().Ctx().Style()
 	if *isOpen {
 		if config.App.Trade.IsPinned {
@@ -78,7 +81,6 @@ func TransactionArrow(t Transaction) string {
 
 func init() {
 	misc.Log().Debug("init trade")
-	registrationSettingsPages(settingPage{"Trade", "pageTrade", pageTrade})
 	maps()
 	misc.Log().Debug("register trade pages")
 }

@@ -63,16 +63,17 @@ func init() {
 }
 
 func main() {
-	backend := imgui.CreateBackend(imgui.NewGLFWBackend())
-	backend.SetBgColor(imgui.NewVec4(0.5, 0.5, 0.5, 1.0))
-	backend.SetWindowHint(0x00020004, 0)
-	backend.CreateWindow(config.App.Info.ProjectName, 500, 500, imgui.GLFWWindowFlagsFloating)
-	backend.SetWindowPos(50, 50)
-	backend.SetTargetFPS(60)
-	x, y := backend.DisplaySize()
+	config.Backend = imgui.CreateBackend(imgui.NewGLFWBackend())
+	config.Backend.SetWindowFlags(imgui.GLFWWindowFlagsVisible, 1)
+	config.Backend.SetWindowFlags(imgui.GLFWWindowFlagsFloating, 1)
+	config.Backend.SetWindowFlags(imgui.GLFWWindowFlagsTransparent, 1)
+	//config.Backend.SetWindowFlags(imgui.GLFWWindowFlagsMousePassthrough, 1)
+	config.Backend.CreateWindow(config.App.Info.ProjectName, 500, 500)
+	config.Backend.SetTargetFPS(60)
+	config.Backend.SetBgColor(imgui.Vec4{X: 0, Y: 0, Z: 0, W: 0})
 
+	//fmt.Println(config.Backend.DisplaySize())
 	imgui.CurrentIO().SetIniFilename("imgui.ini")
-	config.App.Vars.DisplaySize = imgui.Vec2{X: float32(x), Y: float32(y)}
 
 	imgui.CurrentIO().SetConfigFlags(imgui.CurrentIO().ConfigFlags() & ^imgui.ConfigFlagsDockingEnable)
 	imgui.CurrentIO().SetConfigViewportsNoAutoMerge(true)
@@ -119,11 +120,11 @@ func main() {
 		// }
 	}()
 
-	backend.SetCloseCallback(func(b imgui.Backend) {
-		fmt.Println("window is closing")
+	config.Backend.SetCloseCallback(func(b imgui.Backend[imgui.GLFWWindowFlags]) {
+		fmt.Println("close")
 	})
 
-	backend.Run(loop)
+	config.Backend.Run(loop)
 }
 
 func loop() {

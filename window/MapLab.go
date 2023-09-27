@@ -19,12 +19,15 @@ var (
 
 func init() {
 	misc.Log().Debug("init map lab")
-	registrationSettingsPages(settingPage{"Lab map", "pageLabMap", pageLabMap})
 	maps()
 	misc.Log().Debug("register map lab pages")
 }
 
 func LabMapWindow(isOpen *bool) {
+	if config.App.Setting.IsOpen {
+		misc.SelectableSettingItem("Lab map", pageLabMap)
+
+	}
 	if *isOpen || config.TestLog == "You have entered Aspirants' Plaza." {
 		imgui.SetNextWindowSize(config.App.LabMap.WindowSize)
 		imgui.BeginV(config.App.LabMap.Title, &config.App.LabMap.IsOpen, config.App.LabMap.WindowFlags)
@@ -88,7 +91,6 @@ func pageLabMap() {
 	imgui.RadioButtonIntPtr("Compass", &e, 1)
 	imgui.Checkbox("(EXPERIMENTAL) Auto location detection", &isAutoLocationDetection)
 	imgui.Checkbox("(EXPERIMENTAL) Auto difficulty detection", &isAutoDifficultyDetection)
-
 }
 
 func plotMap() {

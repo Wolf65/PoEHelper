@@ -46,7 +46,7 @@ func DockbarWindow(isOpen *bool) {
 			}
 			imgui.SameLine()
 			if imgui.ButtonV(fonts.IconsFontAwesome6.Icons["ArrowRightFromBracket"], config.App.Vars.SquareButton) {
-				imgui.GetBackend().SetShouldClose(true)
+				config.Backend.SetShouldClose(true)
 			}
 
 			imgui.End()

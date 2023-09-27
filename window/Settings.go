@@ -8,45 +8,17 @@ import (
 	"poehelper/misc"
 	"runtime"
 
-	"golang.org/x/exp/slices"
-
 	imgui "github.com/AllenDang/cimgui-go"
 )
 
 var (
-	settingPages []settingPage
-
-	content              string
-	leaguesName          = []string{"Standard", "Hardcore", "Temp Standard", "Temp Hardcore"}
-	currentLeagueID      = 0
-	currentSettingMenuID = 0
+	content         string
+	leaguesName     = []string{"Standard", "Hardcore", "Temp Standard", "Temp Hardcore"}
+	currentLeagueID = 0
 )
-
-type settingPage struct {
-	label   string
-	alias   string
-	content func()
-}
-
-func registrationSettingsPages(sP settingPage) {
-	switch sP.alias {
-	case "pageGeneral":
-		settingPages = slices.Insert(settingPages, 0, sP)
-	case "pageAbout":
-		settingPages = slices.Insert(settingPages, len(settingPages), sP)
-	default:
-		if len(settingPages) == 0 {
-			settingPages = append(settingPages, sP)
-		} else {
-			settingPages = slices.Insert(settingPages, len(settingPages)-1, sP)
-		}
-	}
-}
 
 func init() {
 	misc.Log().Debug("init settings")
-	registrationSettingsPages(settingPage{"General", "pageGeneral", pageGeneral})
-	registrationSettingsPages(settingPage{"About", "pageAbout", pageAbout})
 	misc.Log().Debug("register setting pages")
 }
 
@@ -57,22 +29,19 @@ func SettingsWindow(isOpen *bool) {
 		imgui.BeginV(config.App.Setting.Title, &config.App.Setting.IsOpen, config.App.Setting.WindowFlags)
 		heightChild := imgui.ContentRegionAvail().Y - config.App.Vars.BaseButton.Y - style.ItemSpacing().Y
 
-		imgui.BeginChildStrV("settingMenu", imgui.NewVec2(150, heightChild), true, 0)
-		for i, page := range settingPages {
-			isSelect := currentSettingMenuID == i
-			if imgui.SelectableBoolPtr(page.label, &isSelect) {
-				currentSettingMenuID = i
-			}
-			imgui.Spacing()
-			if isSelect {
-				imgui.SetItemDefaultFocus()
-			}
-		}
+		imgui.BeginChildStrV("IDSettingMenu", imgui.NewVec2(150, heightChild), true, 0)
+		imgui.PushStyleVarVec2(imgui.StyleVarWindowPadding, imgui.Vec2{X: 0, Y: 0})
+
+		imgui.BeginChildStrV("add", imgui.NewVec2(0, -(imgui.FontSize()+style.ItemSpacing().Y*2)), false, 0)
+		imgui.EndChild()
+		imgui.BeginChildStrV("last", imgui.NewVec2(0, 0), false, 0)
+		imgui.EndChild()
+
+		imgui.PopStyleVar()
 		imgui.EndChild()
 		imgui.SameLine()
 
-		imgui.BeginChildStrV("settingContent", imgui.Vec2{X: 0, Y: heightChild}, true, 0)
-		settingPages[currentSettingMenuID].content()
+		imgui.BeginChildStrV("IDSettingContent", imgui.Vec2{X: 0, Y: heightChild}, true, 0)
 		imgui.EndChild()
 
 		imgui.AlignTextToFramePadding()
@@ -89,6 +58,10 @@ func SettingsWindow(isOpen *bool) {
 		}
 
 		imgui.End()
+	}
+	if config.App.Setting.IsOpen {
+		misc.SelectableSettingItem("General", pageGeneral)
+		misc.SelectableSettingItem("About", pageAbout)
 	}
 }
 

@@ -32,22 +32,22 @@ func AppendDefaultFont(io *imgui.IO) {
 	baseConfig := *imgui.NewFontConfig()
 	baseConfig.SetPixelSnapH(true)
 
-	baseRange := imgui.NewGlyphRange()
-	baseBuilder := imgui.NewFontGlyphRangesBuilder()
-	baseBuilder.AddRanges(io.Fonts().GlyphRangesCyrillic())
+	//baseRange := imgui.NewGlyphRange()
+	//baseBuilder := imgui.NewFontGlyphRangesBuilder()
+	//baseBuilder.AddRanges(io.Fonts().GlyphRangesCyrillic())
 	//jetBrainsRangeBuilder.AddRanges(io.Fonts().GlyphRangesKorean())
 	//jetBrainsRangeBuilder.AddRanges(io.Fonts().GlyphRangesJapanese())
 	//jetBrainsRangeBuilder.AddRanges(io.Fonts().GlyphRangesChineseFull())
 	//jetBrainsRangeBuilder.AddRanges(io.Fonts().GlyphRangesGreek())
 	//jetBrainsRangeBuilder.AddRanges(io.Fonts().GlyphRangesThai())
 	//jetBrainsRangeBuilder.AddRanges(io.Fonts().GlyphRangesVietnamese())
-	baseBuilder.BuildRanges(baseRange)
+	//baseBuilder.BuildRanges(baseRange)
 
 	io.Fonts().AddFontFromFileTTFV("fonts/ttf/JetBrainsMono-Medium.ttf",
 		baseFontSize,
 		&baseConfig,
-		//imgui.CurrentIO().Fonts().GlyphRangesCyrillic())
-		baseRange.Data())
+		imgui.CurrentIO().Fonts().GlyphRangesCyrillic())
+	//baseRange.Data())
 
 	// FontAwesome
 	fontAwesomeConfig := *imgui.NewFontConfig()

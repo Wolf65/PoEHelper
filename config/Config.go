@@ -5,7 +5,9 @@ import (
 )
 
 var (
-	TestLog string
+	TestLog        string
+	Backend        imgui.Backend[imgui.GLFWWindowFlags]
+	SelectMenuItem = "General"
 )
 
 type application struct {
@@ -31,7 +33,6 @@ type vars struct {
 	FontDirectory  string
 	LabDirectory   string
 	//
-	DisplaySize    imgui.Vec2
 	BaseButton     imgui.Vec2
 	BaseLongButton imgui.Vec2
 	SquareButton   imgui.Vec2
